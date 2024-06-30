@@ -1,8 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using minimarket_project_backend.Models.Responses;
+using minimarket_project_backend.Utilities;
 using tienda_project_backend.Dtos.Marca;
 using tienda_project_backend.Models;
-using tienda_project_backend.Utilities.Response;
 
 namespace tienda_project_backend.Services.Implementation
 {
@@ -10,266 +11,141 @@ namespace tienda_project_backend.Services.Implementation
     {
         private readonly DbMinimarketContext _dbcontext;
         private readonly IMapper _mapper;
+        private readonly DataResponse<List<MarcaDTO>> _dataResponseList;
+        private readonly DataResponse<MarcaDTO> _dataResponse;
+        private  readonly ApiResponse _apiResponse;
+        private readonly QueryHelper _queryHelper;
+        private readonly ResponseHelper _responseHelper;
+
 
         public MarcaService(DbMinimarketContext dbcontext, IMapper mapper)
         {
             _dbcontext = dbcontext;
             _mapper = mapper;
+            _dataResponseList = new DataResponse<List<MarcaDTO>>();
+            _dataResponse = new DataResponse<MarcaDTO>();
+            _apiResponse = new ApiResponse();
+            _queryHelper = new QueryHelper();
+            _responseHelper = new ResponseHelper(mapper);
         }
+        
 
-        private static IQueryable<TEntity> BuildQuery<TEntity>(IQueryable<TEntity> query, int page, int limit) where TEntity : class
+        public async Task<DataResponse<List<MarcaDTO>>> getAll(int page, int limit)
         {
-
-            if (page > 0)
-            {
-                int skipAmount = (page - 1) * limit;
-                query = query.Skip(skipAmount);
-            }
-
-            if (limit > 0)
-            {
-                query = query.Take(limit);
-            }
-
-            return query;
-        }
-
-        private void HandleResponse<TEntity, TDTO>(Response<List<TDTO>> response, List<TEntity> entities)
-        {
-            if (entities.Count == 0)
-            {
-                response.StatusCode = 404;
-                response.Message = $"No hay {(typeof(TEntity).Name.ToLower())}s disponibles.";
-                response.Error = "Not Found";
-                response.Success = false;
-                response.Data = new List<TDTO>();
-            }
-            else
-            {
-                List<TDTO> entitiesDTO = _mapper.Map<List<TDTO>>(entities);
-
-                response.StatusCode = 200;
-                response.Message = $"{(typeof(TEntity).Name)}s obtenidas con éxito.";
-                response.Success = true;
-                response.Data = entitiesDTO;
-            }
-        }
-
-        private static void HandleException<TEntity>(Response<List<TEntity>> response, Exception ex)
-        {
-            response.StatusCode = 500;
-            response.Message = $"Ocurrió un error: {ex.Message}";
-            response.Error = "Internal Server Error";
-            response.Success = false;
-            response.Data = null;
-        }
-
-        public async Task<Response<List<MarcaDTO>>> getAll(int page, int limit)
-        {
-            Response<List<MarcaDTO>> response = new();
-
             try
             {
-                IQueryable<Marca> query = BuildQuery(_dbcontext.Marca, page, limit);
-
-                List<Marca> marcas = await query.ToListAsync();
-
-                HandleResponse(response, marcas);
-
+                var query = _queryHelper.BuildQuery(_dbcontext.Marca, page, limit);
+                var marcas = await query.ToListAsync();
+                _responseHelper.SetListDataResponse(_dataResponseList, marcas);
             }
             catch (Exception ex)
             {
-                HandleException(response, ex);
+                _responseHelper.SetListErrorResponse(_dataResponseList, ex);
             }
-
-            return response;
+            return _dataResponseList;
         }
 
-        public async Task<Response<List<MarcaDTO>>> search(string name, int page, int limit)
+        public async Task<DataResponse<List<MarcaDTO>>> search(string name, int page, int limit)
         {
-            Response<List<MarcaDTO>> response = new();
-
             try
             {
-                name = name.ToUpper();
-               
-                IQueryable<Marca> query = _dbcontext.Marca.Where(m => m.Nombre.Contains(name))  // Ajusta el campo 'Nombre' según tu modelo
-                                                          .OrderBy(m => m.Id);
-
-                query = BuildQuery(query, page, limit);
-
-                List<Marca> marcas = await query.ToListAsync();
-
-                HandleResponse(response, marcas);
+                name = name.ToUpper();          
+                IQueryable<Marca> query = _dbcontext.Marca.Where(m => m.Nombre.Contains(name)) 
+                                                                                         .OrderBy(m => m.Id);
+                query = _queryHelper.BuildQuery(query, page, limit);
+                var marcas = await query.ToListAsync();
+                _responseHelper.SetListDataResponse(_dataResponseList, marcas);
             }
             catch (Exception ex)
             {
-                HandleException(response, ex);
+                _responseHelper.SetListErrorResponse(_dataResponseList, ex);
             }
-
-            return response;
+            return _dataResponseList;
         }
-
-        public async Task<Response<MarcaDTO>> searchById(int id)
+        
+        public async Task<DataResponse<MarcaDTO>> searchById(int id)
         {
-            Response<MarcaDTO> response = new();
-
             try
             {
-                Marca marca = await _dbcontext.Marca.FindAsync(id);
-
-                if (marca.Equals(null))
-                {
-                    response.StatusCode = 404;
-                    response.Message = $"No existe una marca con el id {id}.";
-                    response.Error = "Not Found";
-                    response.Success = false;
-                    response.Data = new MarcaDTO();
-                }
-
-                MarcaDTO marcaDTO = _mapper.Map<MarcaDTO>(marca);
-
-                response.StatusCode = 200;
-                response.Message = "Marca obtenida con éxito.";
-                response.Success = true;
-                response.Data = marcaDTO;
+                var marca = await _dbcontext.Marca.FindAsync(id);
+                _responseHelper.SetDataResponse(_dataResponse, marca, id);
             }
             catch (Exception ex)
             {
-                response.StatusCode = 500;
-                response.Message = $"Ocurrió un error: {ex.Message}";
-                response.Error = "Internal Server Error";
-                response.Success = false;
+                _responseHelper.SetStandardErrorResponse(_dataResponse, ex);
             }
-
-            return response;
+            return _dataResponse;
         }
 
-        public async Task<Response<Marca>> create(CreateMarcaDTO createMarcaDTO)
+        public async Task<ApiResponse> create(CreateMarcaDTO createMarcaDTO)
         {
-            Response<Marca> response = new();
-
             try
             {
-                
-                //if (createMarcaDTO.Nombre.Equals(null))
-                //{
-                //    response.StatusCode = 400;
-                //    response.Message = "El campo nombre es requerido";
-                //    response.Error = "Bad Request";
-                //    response.Success = false;
-
-                //    return response;
-                //}
-
-                //if (createMarcaDTO.Estado.Equals(null))
-                //{
-                //    response.StatusCode = 400;
-                //    response.Message = "El campo estado es requerido";
-                //    response.Error = "Bad Request";
-                //    response.Success = false;
-
-                //    return response;
-                //}
-
-
-                Marca marca = _mapper.Map<Marca>(createMarcaDTO);
+                var marca = _mapper.Map<Marca>(createMarcaDTO);
 
                 marca.FechaCreacion = DateTime.Now;
 
                 _dbcontext.Marca.Add(marca);
                 await _dbcontext.SaveChangesAsync();
-
-                response.StatusCode = 200;
-                response.Message = "Marca creada con éxito.";
-                response.Success = true;
-                response.Data = marca;
+                _responseHelper.SetCreateResponse(_apiResponse, marca);
             }
             catch (Exception ex)
             {
-                response.StatusCode = 500;
-                response.Message = $"Ocurrió un error: {ex.Message}";
-                response.Error = "Internal Server Error";
-                response.Success = false;
+                _responseHelper.SetStandardErrorResponse(_apiResponse, ex);
             }
-
-            return response;
+            return _apiResponse;
         }
 
-        public async Task<Response<Marca>> update(UpdateMarcaDTO updateMarcaDTO)
+        public async Task<ApiResponse> update(UpdateMarcaDTO updateMarcaDTO)
         {
-            Response<Marca> response = new();
-
             try
             {
-                Marca marca = await _dbcontext.Marca.FindAsync(updateMarcaDTO.Id);
+                var marca = await _dbcontext.Marca.FindAsync(updateMarcaDTO.Id);
 
                 if (marca == null)
                 {
-                    response.StatusCode = 404;
-                    response.Message = $"No se encontro a una marca con el id {updateMarcaDTO.Id}";
-                    response.Error = "Not Found";
-                    response.Success = false;
+                    _responseHelper.SetNotFoundApiResponse(_apiResponse, marca,updateMarcaDTO.Id);
                 }
+                else
+                {
+                    marca.Nombre = updateMarcaDTO.Nombre ?? marca.Nombre;
+                    marca.RutaImagen = updateMarcaDTO.RutaImagen ?? marca.RutaImagen;
+                    marca.Estado = updateMarcaDTO.Estado;
+                    marca.FechaModificacion = DateTime.Now;
 
-                marca.Nombre = updateMarcaDTO.Nombre is null ? marca.Nombre : updateMarcaDTO.Nombre;
-                marca.RutaImagen = updateMarcaDTO.RutaImagen is null ? marca.RutaImagen : updateMarcaDTO.RutaImagen;
-                marca.Estado = updateMarcaDTO.Estado;
-                marca.FechaModificacion = DateTime.Now;
-
-                _dbcontext.Marca.Update(marca);
-                await _dbcontext.SaveChangesAsync();
-
-                //MarcaDTO responseMarca = _mapper.Map<MarcaDTO>(marca);
-
-                response.StatusCode = 200;
-                response.Message = "Marca actualizada con éxito.";
-                response.Success = true;
-                response.Data = marca;
+                    _dbcontext.Marca.Update(marca);
+                    await _dbcontext.SaveChangesAsync();
+                    _responseHelper.SetUpdateResponse(_apiResponse, marca);
+                }
             }
             catch (Exception ex)
             {
-                response.StatusCode = 500;
-                response.Message = $"Ocurrió un error: {ex.Message}";
-                response.Error = "Internal Server Error";
-                response.Success = false;
+                _responseHelper.SetStandardErrorResponse(_apiResponse, ex);
             }
-
-            return response;
+            return _apiResponse;
         }
 
-        public async Task<Response<Marca>> delete(int id)
+        public async Task<ApiResponse> delete(int id)
         {
-            Response<Marca> response = new();
-
             try
             {
-                Marca marca = await _dbcontext.Marca.FindAsync(id);
-
+                var marca = await _dbcontext.Marca.FindAsync(id);
                 if (marca == null)
                 {
-                    response.StatusCode = 404;
-                    response.Message = $"No se encontro a una marca con el id {id}";
-                    response.Error = "Not Found";
-                    response.Success = false;
+                    _responseHelper.SetNotFoundApiResponse(_apiResponse, marca, id);
                 }
-
-                _dbcontext.Marca.Remove(marca);
-                await _dbcontext.SaveChangesAsync();
-
-                response.StatusCode = 200;
-                response.Message = $"La marca con el id {marca.Id} fue eliminada con éxito.";
-                response.Success = true;
+                else
+                {
+                    _dbcontext.Marca.Remove(marca);
+                    await _dbcontext.SaveChangesAsync();
+                    _responseHelper.SetDeleteResponse(_apiResponse, marca);
+                }
             }
             catch (Exception ex)
             {
-                response.StatusCode = 500;
-                response.Message = $"Ocurrió un error: {ex.Message}";
-                response.Error = "Internal Server Error";
-                response.Success = false;
+                _responseHelper.SetStandardErrorResponse(_apiResponse, ex);
             }
-
-            return response;
+            return _apiResponse;
         }
     }
 }

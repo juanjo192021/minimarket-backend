@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using minimarket_project_backend.Models.Responses;
+using minimarket_project_backend.Utilities;
+using System.Collections.Generic;
 using tienda_project_backend.Dtos.Producto;
 using tienda_project_backend.Models;
-using tienda_project_backend.Utilities.Response;
 
 namespace tienda_project_backend.Services.Implementation
 {
@@ -10,23 +12,34 @@ namespace tienda_project_backend.Services.Implementation
     {
         private readonly DbMinimarketContext _dbcontext;
         private readonly IMapper _mapper;
+        private readonly DataResponse<List<ProductoDTO>> _dataResponseList;
+        private readonly DataResponse<ProductoDTO> _dataResponse;
+        private readonly ApiResponse _apiResponse;
+        private readonly QueryHelper _queryHelper;
+        private readonly ResponseHelper _responseHelper;
+
 
         public ProductoService(DbMinimarketContext dbcontext, IMapper mapper)
         {
             _dbcontext = dbcontext;
             _mapper = mapper;
+            _dataResponseList = new DataResponse<List<ProductoDTO>>();
+            _dataResponse = new DataResponse<ProductoDTO>();
+            _apiResponse = new ApiResponse();
+            _queryHelper = new QueryHelper();
+            _responseHelper = new ResponseHelper(mapper);
+
         }
 
-        public async Task<Response<List<ProductoDTO>>> getAll()
+        public async Task<DataResponse<List<ProductoDTO>>> getAll(int page, int limit)
         {
-            var response = new Response<List<ProductoDTO>>();
-
             try
             {
-                List<Producto> productos = await (from p in _dbcontext.Producto
+                var query = _queryHelper.BuildQuery(_dbcontext.Producto, page, limit);
+                var productos = await (from p in query
                                                   join c in _dbcontext.Categoria on p.IdCategoria equals c.Id
                                                   join m in _dbcontext.Marca on p.IdMarca equals m.Id
-                                                  select new Producto
+                                                  select new ProductoDTO
                                                   {
                                                       Id = p.Id,
                                                       Nombre = p.Nombre,
@@ -37,51 +50,18 @@ namespace tienda_project_backend.Services.Implementation
                                                       Estado = p.Estado,
                                                       FechaCreacion = p.FechaCreacion,
                                                       FechaModificacion = p.FechaModificacion,
-                                                      Categoria = new Categoria
-                                                      {
-                                                          Id = c.Id,
-                                                          Nombre = c.Nombre,
-                                                          RutaImagen = c.RutaImagen,
-                                                          Estado = c.Estado,
-                                                          FechaCreacion = c.FechaCreacion,
-                                                          FechaModificacion = c.FechaModificacion
-                                                      },
-                                                      Marca = new Marca
-                                                      {
-                                                          Id = m.Id,
-                                                          Nombre = m.Nombre,
-                                                          RutaImagen = m.RutaImagen,
-                                                          Estado = m.Estado,
-                                                          FechaCreacion = m.FechaCreacion,
-                                                          FechaModificacion = m.FechaModificacion
-                                                      }
+                                                      Categoria = c.Nombre,
+                                                      Marca = m.Nombre
                                                   }).ToListAsync();
 
-                if (productos.Equals(null) || !productos.Any())
-                {
-                    response.StatusCode = 200;
-                    response.Message = "No hay productos disponibles.";
-                    response.Success = true;
-                    response.Data = [];
-                }
-
-                // Mapper para pasar de productos a productos DTO
-                List<ProductoDTO> productosDTO = _mapper.Map<List<ProductoDTO>>(productos);
-
-                response.StatusCode = 200;
-                response.Message = "Productos obtenidos con éxito.";
-                response.Success = true;
-                response.Data = productosDTO;
+                _responseHelper.SetListDataFilterResponse(_dataResponseList, productos);
             }
             catch (Exception ex)
             {
-                response.StatusCode = 500;
-                response.Message = $"Ocurrió un error: {ex.Message}";
-                response.Error = "Internal Server Error";
-                response.Success = false;
+                _responseHelper.SetListErrorResponse(_dataResponseList, ex);
             }
 
-            return response;
+            return _dataResponseList;
         }
     }
 }

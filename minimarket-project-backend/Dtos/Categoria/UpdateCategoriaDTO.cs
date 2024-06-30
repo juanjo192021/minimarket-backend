@@ -1,6 +1,6 @@
-﻿namespace tienda_project_backend.Dtos.Marca
+﻿namespace minimarket_project_backend.Dtos.Categoria
 {
-    public class UpdateMarcaDTO
+    public class UpdateCategoriaDTO
     {
         public int Id { get; set; }
 

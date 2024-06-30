@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("minimarket-project-backend")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+89f05a1c8db2e1bf4972eb3caefc054cccebad13")]
 [assembly: System.Reflection.AssemblyProductAttribute("minimarket-project-backend")]
 [assembly: System.Reflection.AssemblyTitleAttribute("minimarket-project-backend")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

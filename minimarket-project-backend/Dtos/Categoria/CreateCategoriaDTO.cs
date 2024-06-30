@@ -1,9 +1,7 @@
-﻿namespace tienda_project_backend.Dtos.Marca
+﻿namespace minimarket_project_backend.Dtos.Categoria
 {
-    public class UpdateMarcaDTO
+    public class CreateCategoriaDTO
     {
-        public int Id { get; set; }
-
         public string Nombre { get; set; } = null!;
 
         public string? RutaImagen { get; set; }

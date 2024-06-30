@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using minimarket_project_backend.Dtos.Categoria;
+using minimarket_project_backend.Models.Responses;
+using minimarket_project_backend.Utilities;
 using tienda_project_backend.Dtos.Categoria;
+using tienda_project_backend.Dtos.Marca;
 using tienda_project_backend.Models;
-using tienda_project_backend.Utilities.Response;
 
 namespace tienda_project_backend.Services.Implementation
 {
@@ -10,47 +13,60 @@ namespace tienda_project_backend.Services.Implementation
     {
         private readonly DbMinimarketContext _dbcontext;
         private readonly IMapper _mapper;
+        private readonly DataResponse<List<CategoriaDTO>> _dataResponseList;
+        private readonly DataResponse<CategoriaDTO> _dataResponse;
+        private readonly ApiResponse _apiResponse;
+        private readonly QueryHelper _queryHelper;
+        private readonly ResponseHelper _responseHelper;
 
         public CategoriaService(DbMinimarketContext dbcontext, IMapper mapper)
         {
             _dbcontext = dbcontext;
             _mapper = mapper;
+            _dataResponseList = new DataResponse<List<CategoriaDTO>>();
+            _dataResponse = new DataResponse<CategoriaDTO>();
+            _apiResponse = new ApiResponse();
+            _queryHelper = new QueryHelper();
+            _responseHelper = new ResponseHelper(mapper);
         }
 
-        public async Task<Response<List<CategoriaDTO>>> getAll()
+        public async Task<DataResponse<List<CategoriaDTO>>> getAll(int page, int limit)
         {
-            Response<List<CategoriaDTO>> response = new();
-
             try
             {
-                List<Categoria> categorias = await _dbcontext.Categoria.ToListAsync();
-
-                if (categorias.Equals(null) || !categorias.Any())
-                {
-                    response.StatusCode = 200;
-                    response.Message = "No hay categorías disponibles.";
-                    response.Success = true;
-                    response.Data = [];
-                    //response.error = "";
-                }
-
-                List<CategoriaDTO> categoriasDTO = _mapper.Map<List<CategoriaDTO>>(categorias);
-
-                response.StatusCode = 200;
-                response.Message = "Categorías obtenidas con éxito.";
-                response.Success = true;
-                response.Data = categoriasDTO;
+                var query = _queryHelper.BuildQuery(_dbcontext.Categoria, page, limit);
+                var categorias = await query.ToListAsync();
+                _responseHelper.SetListDataResponse(_dataResponseList, categorias);
             }
             catch (Exception ex)
             {
-                response.StatusCode = 500;
-                response.Message = $"Ocurrió un error: {ex.Message}";
-                response.Error = "Internal Server Error";
-                response.Success = false;
+                _responseHelper.SetListErrorResponse(_dataResponseList, ex);
             }
+            return _dataResponseList;
+        }
 
-            return response;
+        public Task<DataResponse<List<CategoriaDTO>>> search(string name, int page, int limit)
+        {
+            throw new NotImplementedException();
+        }
 
+        public Task<DataResponse<CategoriaDTO>> searchById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResponse> create(CreateCategoriaDTO createCategoriaDTO)
+        {
+            throw new NotImplementedException();
+        }
+        public Task<ApiResponse> update(UpdateCategoriaDTO updateCategoriaDTO)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ApiResponse> delete(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

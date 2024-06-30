@@ -9,6 +9,8 @@ namespace tienda_project_backend.Profiles
         public MarcaProfile() 
         {
             CreateMap<Marca, MarcaDTO>();
+            CreateMap<CreateMarcaDTO,Marca>();
+            CreateMap<UpdateMarcaDTO,Marca>();
         }
     }
 }
