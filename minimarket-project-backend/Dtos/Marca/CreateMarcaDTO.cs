@@ -4,8 +4,6 @@
     {
         public string Nombre { get; set; } = null!;
 
-        public string? RutaImagen { get; set; }
-
-        public bool Estado { get; set; }
+        public IFormFile? Imagen { get; set; }  // Archivo de imagen
     }
 }

@@ -5,11 +5,10 @@ namespace tienda_project_backend.Services
 {
     public interface IMarca
     {
-        public Task<DataResponse<List<MarcaDTO>>> getAll(int page, int limit);
-        public Task<DataResponse<List<MarcaDTO>>> search(string name, int page, int limit);
-        public Task<DataResponse<MarcaDTO>> searchById(int id);
-        public Task<ApiResponse> create(CreateMarcaDTO createMarcaDTO);
-        public Task<ApiResponse> update(UpdateMarcaDTO updateMarcaDTO);
-        public Task<ApiResponse> delete(int id);
+        public Task<PaginationResponse<List<MarcaDTO>>> GetAll(string name, int page, int limit);
+        public Task<MarcaDTO?> SearchById(int id);
+        public Task<MarcaDTO?> Create(CreateMarcaDTO createMarcaDTO);
+        public Task<MarcaDTO?> Update(UpdateMarcaDTO updateMarcaDTO);
+        public Task<bool> Delete(int id);
     }
 }

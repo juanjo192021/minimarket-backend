@@ -13,17 +13,17 @@ namespace tienda_project_backend.Controllers
     {
         private readonly ICategoria _iCategoria = iCategoria;
         private readonly MethodsHTTPValidator methodsHTTPValidator = new();
-        private readonly ResponseProcessor responseProcessor = new();
 
         [HttpGet]
         [Route("getAll")]
         public async Task<IActionResult> getAll([FromQuery] int page, [FromQuery] int limit)
         {
-            var validationResult = methodsHTTPValidator.ValidatePagination(page, limit);
-            if (validationResult != null) return validationResult;
+            //var validationResult = methodsHTTPValidator.ValidatePagination(page, limit);
+            //if (validationResult != null) return validationResult;
 
-            var response = await _iCategoria.getAll(page, limit);
-            return responseProcessor.ProcessDataResponse(response);
+            //var response = await _iCategoria.getAll(page, limit);
+            //return responseProcessor.ProcessDataResponse(response);
+            return Ok(null);
         }
     }
 }

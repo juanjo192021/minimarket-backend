@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using minimarket_project_backend.Dtos.Categoria;
+using minimarket_project_backend.Helpers;
 using minimarket_project_backend.Models.Responses;
 using minimarket_project_backend.Utilities;
 using tienda_project_backend.Dtos.Categoria;
@@ -18,6 +19,7 @@ namespace tienda_project_backend.Services.Implementation
         private readonly ApiResponse _apiResponse;
         private readonly QueryHelper _queryHelper;
         private readonly ResponseHelper _responseHelper;
+        private readonly ErrorResponseHelper _errorResponseHelper;
 
         public CategoriaService(DbMinimarketContext dbcontext, IMapper mapper)
         {
@@ -28,21 +30,22 @@ namespace tienda_project_backend.Services.Implementation
             _apiResponse = new ApiResponse();
             _queryHelper = new QueryHelper();
             _responseHelper = new ResponseHelper(mapper);
+            _errorResponseHelper = new ErrorResponseHelper();
         }
 
         public async Task<DataResponse<List<CategoriaDTO>>> getAll(int page, int limit)
         {
-            try
-            {
-                var query = _queryHelper.BuildQuery(_dbcontext.Categoria, page, limit);
-                var categorias = await query.ToListAsync();
-                _responseHelper.SetListDataResponse(_dataResponseList, categorias);
-            }
-            catch (Exception ex)
-            {
-                _responseHelper.SetListErrorResponse(_dataResponseList, ex);
-            }
-            return _dataResponseList;
+            //try
+            //{
+            //    var query = _queryHelper.BuildQuery(_dbcontext.Categoria, page, limit);
+            //    var categorias = await query.ToListAsync();
+            //    return _responseHelper.SetListResponse<Categoria, CategoriaDTO>(categorias);
+            //}
+            //catch (Exception ex)
+            //{
+            //    return _errorResponseHelper.SetErrorForListResponse<List<CategoriaDTO>>(ex);
+            //}
+            throw new NotImplementedException();
         }
 
         public Task<DataResponse<List<CategoriaDTO>>> search(string name, int page, int limit)

@@ -1,7 +1,10 @@
-﻿namespace minimarket_project_backend.Models.Responses
+﻿using System.Text.Json.Serialization;
+
+namespace minimarket_project_backend.Models.Responses
 {
     public class DataResponse<T> : ApiResponse
     {
-        public T? Data { get; set; }
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        public T? Data { get; set; } = default!;
     }
 }

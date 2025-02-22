@@ -1,8 +1,8 @@
 using FluentValidation;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using minimarket_project_backend.Services;
+using minimarket_project_backend.Services.Implementation;
 using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
-using tienda_project_backend.Dtos.Marca;
 using tienda_project_backend.Models;
 using tienda_project_backend.Services;
 using tienda_project_backend.Services.Implementation;
@@ -36,6 +36,7 @@ builder.Services.AddCors(opt =>
 builder.Services.AddScoped<ICategoria, CategoriaService>();
 builder.Services.AddScoped<IMarca, MarcaService>();
 builder.Services.AddScoped<IProducto, ProductoService>();
+builder.Services.AddScoped<IFirebaseStorageService, FirebaseStorageService>();
 
 // 6) Inyección de AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
