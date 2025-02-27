@@ -12,7 +12,8 @@ namespace minimarket_project_backend.Utilities
             int page, 
             int limit) where TEntity : class
         {
-            return await query.Skip((page - 1) * limit)
+            return await query.OrderBy(e => EF.Property<object>(e, "Id"))
+                              .Skip((page - 1) * limit)
                               .Take(limit)
                               .ToListAsync();
         }

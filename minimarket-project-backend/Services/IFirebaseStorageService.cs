@@ -2,6 +2,7 @@
 {
     public interface IFirebaseStorageService
     {
-        Task<string> UploadFileAsync(Stream archivo, string nombre);
+        Task<string> UploadFileAsync(string carpeta,Stream archivo, string nombre, string PrevImage);
+        Task<bool> DeleteFileAsync(string nombre);
     }
 }

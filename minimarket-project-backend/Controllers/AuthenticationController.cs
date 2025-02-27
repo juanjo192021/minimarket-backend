@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace minimarket_project_backend.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("authentication")]
     [ApiController]
-    public class UsuarioController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
     }
 }

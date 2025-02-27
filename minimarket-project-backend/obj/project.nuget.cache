@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "f3iYZYanb1Q=",
+  "dgSpecHash": "+o4Fov6PEw8=",
   "success": true,
   "projectFilePath": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\minimarket-project-backend.csproj",
   "expectedPackageFiles": [
@@ -80,10 +80,10 @@
     "C:\\Users\\ADM\\.nuget\\packages\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl\\4.3.0\\runtime.ubuntu.16.10-x64.runtime.native.system.security.cryptography.openssl.4.3.0.nupkg.sha512",
     "C:\\Users\\ADM\\.nuget\\packages\\sharpgrip.fluentvalidation.autovalidation.mvc\\1.5.0\\sharpgrip.fluentvalidation.autovalidation.mvc.1.5.0.nupkg.sha512",
     "C:\\Users\\ADM\\.nuget\\packages\\sharpgrip.fluentvalidation.autovalidation.shared\\1.5.0\\sharpgrip.fluentvalidation.autovalidation.shared.1.5.0.nupkg.sha512",
-    "C:\\Users\\ADM\\.nuget\\packages\\swashbuckle.aspnetcore\\7.2.0\\swashbuckle.aspnetcore.7.2.0.nupkg.sha512",
-    "C:\\Users\\ADM\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\7.2.0\\swashbuckle.aspnetcore.swagger.7.2.0.nupkg.sha512",
-    "C:\\Users\\ADM\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\7.2.0\\swashbuckle.aspnetcore.swaggergen.7.2.0.nupkg.sha512",
-    "C:\\Users\\ADM\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\7.2.0\\swashbuckle.aspnetcore.swaggerui.7.2.0.nupkg.sha512",
+    "C:\\Users\\ADM\\.nuget\\packages\\swashbuckle.aspnetcore\\7.3.0\\swashbuckle.aspnetcore.7.3.0.nupkg.sha512",
+    "C:\\Users\\ADM\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\7.3.0\\swashbuckle.aspnetcore.swagger.7.3.0.nupkg.sha512",
+    "C:\\Users\\ADM\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\7.3.0\\swashbuckle.aspnetcore.swaggergen.7.3.0.nupkg.sha512",
+    "C:\\Users\\ADM\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\7.3.0\\swashbuckle.aspnetcore.swaggerui.7.3.0.nupkg.sha512",
     "C:\\Users\\ADM\\.nuget\\packages\\system.appcontext\\4.3.0\\system.appcontext.4.3.0.nupkg.sha512",
     "C:\\Users\\ADM\\.nuget\\packages\\system.buffers\\4.3.0\\system.buffers.4.3.0.nupkg.sha512",
     "C:\\Users\\ADM\\.nuget\\packages\\system.clientmodel\\1.0.0\\system.clientmodel.1.0.0.nupkg.sha512",

@@ -1,18 +1,18 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using minimarket_project_backend.Models.Responses;
+using minimarket_project_backend.Common.Responses;
 
 namespace minimarket_project_backend.Helpers
 {
-    public class ResponseHelper(IMapper mapper)
+    public class ResponseHelper
     {
-        private readonly IMapper _mapper = mapper;
+        //private readonly IMapper _mapper = mapper;
 
         // Mapea la respuesta de la paginación y retorna la respuesta mapeada
 
-        public PaginationResponse<List<TDTO>> MapToPaginationResponse<TEntity, TDTO>(PaginationResponse<List<TEntity>> entities)
+        public PaginationResponse<List<TEntity>> CreatePaginationResponse<TEntity>(PaginationResponse<List<TEntity>> entities)
         {
-            return new PaginationResponse<List<TDTO>>
+            return new PaginationResponse<List<TEntity>>
             {
                 Page = entities.Page,
                 PageSize = entities.PageSize,
@@ -20,7 +20,8 @@ namespace minimarket_project_backend.Helpers
                 TotalPages = entities.TotalPages,
                 HasPreviousPage = entities.HasPreviousPage,
                 HasNextPage = entities.HasNextPage,
-                Data = _mapper.Map<List<TDTO>>(entities.Data)
+                //Data = _mapper.Map<List<TDTO>>(entities.Data)
+                Data = entities.Data
             };
         }
 
@@ -55,7 +56,7 @@ namespace minimarket_project_backend.Helpers
         public IActionResult CreateSuccessDeleteResponse(string message)
         {
             return new OkObjectResult(
-                new ApiResponse
+                new ErrorResponse
                 {
                     StatusCode = 200,
                     Message = message,

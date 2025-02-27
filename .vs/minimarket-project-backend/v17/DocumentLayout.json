@@ -3,24 +3,32 @@
   "WorkspaceRootPath": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|c:\\users\\adm\\desktop\\proyectos\\c#\\minimarket-backend\\minimarket-project-backend\\common\\validator\\brandrequestvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|solutionrelative:minimarket-project-backend\\common\\validator\\brandrequestvalidator.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|c:\\users\\adm\\desktop\\proyectos\\c#\\minimarket-backend\\minimarket-project-backend\\dtos\\brand\\brandrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|solutionrelative:minimarket-project-backend\\dtos\\brand\\brandrequestdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|c:\\users\\adm\\desktop\\proyectos\\c#\\minimarket-backend\\minimarket-project-backend\\services\\implementation\\brandservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|solutionrelative:minimarket-project-backend\\services\\implementation\\brandservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|c:\\users\\adm\\desktop\\proyectos\\c#\\minimarket-backend\\minimarket-project-backend\\controllers\\brandscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|solutionrelative:minimarket-project-backend\\controllers\\brandscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|c:\\users\\adm\\desktop\\proyectos\\c#\\minimarket-backend\\minimarket-project-backend\\services\\implementation\\productservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|solutionrelative:minimarket-project-backend\\services\\implementation\\productservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|c:\\users\\adm\\desktop\\proyectos\\c#\\minimarket-backend\\minimarket-project-backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|solutionrelative:minimarket-project-backend\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|c:\\users\\adm\\desktop\\proyectos\\c#\\minimarket-backend\\minimarket-project-backend\\controllers\\marcacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|solutionrelative:minimarket-project-backend\\controllers\\marcacontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|c:\\users\\adm\\desktop\\proyectos\\c#\\minimarket-backend\\minimarket-project-backend\\services\\implementation\\marcaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|solutionrelative:minimarket-project-backend\\services\\implementation\\marcaservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|c:\\users\\adm\\desktop\\proyectos\\c#\\minimarket-backend\\minimarket-project-backend\\dtos\\marca\\createmarcadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|solutionrelative:minimarket-project-backend\\dtos\\marca\\createmarcadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|c:\\users\\adm\\desktop\\proyectos\\c#\\minimarket-backend\\minimarket-project-backend\\services\\implementation\\firebasestorageservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|solutionrelative:minimarket-project-backend\\services\\implementation\\firebasestorageservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|c:\\users\\adm\\desktop\\proyectos\\c#\\minimarket-backend\\minimarket-project-backend\\profiles\\productprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{936DB17D-624F-478C-BF9A-4CB4B8E8E36A}|minimarket-project-backend\\minimarket-project-backend.csproj|solutionrelative:minimarket-project-backend\\profiles\\productprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -30,71 +38,97 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "BrandsController.cs",
+              "DocumentMoniker": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Controllers\\BrandsController.cs",
+              "RelativeDocumentMoniker": "minimarket-project-backend\\Controllers\\BrandsController.cs",
+              "ToolTip": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Controllers\\BrandsController.cs",
+              "RelativeToolTip": "minimarket-project-backend\\Controllers\\BrandsController.cs",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAAAAsAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-25T19:20:02.632Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "BrandRequestValidator.cs",
+              "DocumentMoniker": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Common\\Validator\\BrandRequestValidator.cs",
+              "RelativeDocumentMoniker": "minimarket-project-backend\\Common\\Validator\\BrandRequestValidator.cs",
+              "ToolTip": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Common\\Validator\\BrandRequestValidator.cs*",
+              "RelativeToolTip": "minimarket-project-backend\\Common\\Validator\\BrandRequestValidator.cs*",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABoAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-26T18:35:03.966Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Program.cs",
               "RelativeDocumentMoniker": "minimarket-project-backend\\Program.cs",
               "ToolTip": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Program.cs",
               "RelativeToolTip": "minimarket-project-backend\\Program.cs",
-              "ViewState": "AgIAAA4AAAAAAAAAAAAAACgAAABKAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAMAAAAyAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-22T23:11:14.843Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "CreateMarcaDTO.cs",
-              "DocumentMoniker": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Dtos\\Marca\\CreateMarcaDTO.cs",
-              "RelativeDocumentMoniker": "minimarket-project-backend\\Dtos\\Marca\\CreateMarcaDTO.cs",
-              "ToolTip": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Dtos\\Marca\\CreateMarcaDTO.cs",
-              "RelativeToolTip": "minimarket-project-backend\\Dtos\\Marca\\CreateMarcaDTO.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-22T23:04:28.098Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "MarcaService.cs",
-              "DocumentMoniker": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Services\\Implementation\\MarcaService.cs",
-              "RelativeDocumentMoniker": "minimarket-project-backend\\Services\\Implementation\\MarcaService.cs",
-              "ToolTip": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Services\\Implementation\\MarcaService.cs",
-              "RelativeToolTip": "minimarket-project-backend\\Services\\Implementation\\MarcaService.cs",
-              "ViewState": "AgIAAFwAAAAAAAAAAADwv28AAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-22T23:02:11.595Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "MarcaController.cs",
-              "DocumentMoniker": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Controllers\\MarcaController.cs",
-              "RelativeDocumentMoniker": "minimarket-project-backend\\Controllers\\MarcaController.cs",
-              "ToolTip": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Controllers\\MarcaController.cs",
-              "RelativeToolTip": "minimarket-project-backend\\Controllers\\MarcaController.cs",
-              "ViewState": "AgIAAFMAAAAAAAAAAADwv2YAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-22T23:01:45.535Z",
+              "WhenOpened": "2025-02-26T18:18:16.823Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "FirebaseStorageService.cs",
-              "DocumentMoniker": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Services\\Implementation\\FirebaseStorageService.cs",
-              "RelativeDocumentMoniker": "minimarket-project-backend\\Services\\Implementation\\FirebaseStorageService.cs",
-              "ToolTip": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Services\\Implementation\\FirebaseStorageService.cs",
-              "RelativeToolTip": "minimarket-project-backend\\Services\\Implementation\\FirebaseStorageService.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Title": "ProductService.cs",
+              "DocumentMoniker": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Services\\Implementation\\ProductService.cs",
+              "RelativeDocumentMoniker": "minimarket-project-backend\\Services\\Implementation\\ProductService.cs",
+              "ToolTip": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Services\\Implementation\\ProductService.cs",
+              "RelativeToolTip": "minimarket-project-backend\\Services\\Implementation\\ProductService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-22T22:27:06.509Z",
+              "WhenOpened": "2025-02-26T18:38:54.493Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "BrandService.cs",
+              "DocumentMoniker": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Services\\Implementation\\BrandService.cs",
+              "RelativeDocumentMoniker": "minimarket-project-backend\\Services\\Implementation\\BrandService.cs",
+              "ToolTip": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Services\\Implementation\\BrandService.cs",
+              "RelativeToolTip": "minimarket-project-backend\\Services\\Implementation\\BrandService.cs",
+              "ViewState": "AgIAAGAAAAAAAAAAAAAowH4AAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-25T21:12:14.913Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "BrandRequestDTO.cs",
+              "DocumentMoniker": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Dtos\\Brand\\BrandRequestDTO.cs",
+              "RelativeDocumentMoniker": "minimarket-project-backend\\Dtos\\Brand\\BrandRequestDTO.cs",
+              "ToolTip": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Dtos\\Brand\\BrandRequestDTO.cs",
+              "RelativeToolTip": "minimarket-project-backend\\Dtos\\Brand\\BrandRequestDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-26T20:13:59.324Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ProductProfile.cs",
+              "DocumentMoniker": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Profiles\\ProductProfile.cs",
+              "RelativeDocumentMoniker": "minimarket-project-backend\\Profiles\\ProductProfile.cs",
+              "ToolTip": "C:\\Users\\ADM\\Desktop\\PROYECTOS\\C#\\minimarket-backend\\minimarket-project-backend\\Profiles\\ProductProfile.cs",
+              "RelativeToolTip": "minimarket-project-backend\\Profiles\\ProductProfile.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-26T18:38:48.691Z",
               "EditorCaption": ""
             }
           ]

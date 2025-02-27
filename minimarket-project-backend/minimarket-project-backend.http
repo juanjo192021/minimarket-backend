@@ -5,12 +5,11 @@ Accept: application/json
 
 ###
 
-PATCH {{minimarket_project_backend_HostAddress}}/marca/update
+POST {{minimarket_project_backend_HostAddress}}/brands
 Accept: application/json
 Content-Type: application/json
 {
-  "Id": 1,
-  "Nombre": "gyrtyrty",
-  "RutaImagen": "",
-  "Estado": false
+  "Name": "",
+  "FileImage": "",
+  "Status": false
 }

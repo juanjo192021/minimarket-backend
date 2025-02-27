@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace tienda_project_backend.Models;
+namespace minimarket_project_backend.Models;
 
 public partial class DbMinimarketContext : DbContext
 {
@@ -15,458 +15,488 @@ public partial class DbMinimarketContext : DbContext
     {
     }
 
-    public virtual DbSet<Categoria> Categoria { get; set; }
+    public virtual DbSet<Brand> Brands { get; set; }
 
-    public virtual DbSet<Cliente> Cliente { get; set; }
+    public virtual DbSet<Category> Categories { get; set; }
 
-    public virtual DbSet<Departamento> Departamento { get; set; }
+    public virtual DbSet<District> Districts { get; set; }
 
-    public virtual DbSet<DetalleVenta> DetalleVenta { get; set; }
+    public virtual DbSet<PaymentHistory> PaymentHistories { get; set; }
 
-    public virtual DbSet<Distrito> Distritos { get; set; }
+    public virtual DbSet<PaymentMethod> PaymentMethods { get; set; }
 
-    public virtual DbSet<HistorialRefreshToken> HistorialRefreshToken { get; set; }
+    public virtual DbSet<Product> Products { get; set; }
 
-    public virtual DbSet<Marca> Marca { get; set; }
+    public virtual DbSet<ProductFlavor> ProductFlavors { get; set; }
 
-    public virtual DbSet<Producto> Producto { get; set; }
+    public virtual DbSet<ProductPresentation> ProductPresentations { get; set; }
 
-    public virtual DbSet<Provincia> Provincia { get; set; }
+    public virtual DbSet<ProductVariant> ProductVariants { get; set; }
 
-    public virtual DbSet<Usuario> Usuario { get; set; }
+    public virtual DbSet<Province> Provinces { get; set; }
 
-    public virtual DbSet<Venta> Venta { get; set; }
+    public virtual DbSet<Region> Regions { get; set; }
+
+    public virtual DbSet<Role> Roles { get; set; }
+
+    public virtual DbSet<Sale> Sales { get; set; }
+
+    public virtual DbSet<SaleDetail> SaleDetails { get; set; }
+
+    public virtual DbSet<SystemUser> SystemUsers { get; set; }
+
+    public virtual DbSet<UserRole> UserRoles { get; set; }
+
+    public virtual DbSet<UserType> UserTypes { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Server=DESKTOP-5KD39FJ\\SQLEXPRESS;DataBase=DB_MINIMARKET; Trusted_Connection=True; TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Categoria>(entity =>
+        modelBuilder.Entity<Brand>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__CATEGORI__3213E83F4552BC4A");
+            entity.HasKey(e => e.Id).HasName("PK__Brand__3214EC0738B28ECB");
 
-            entity.ToTable("CATEGORIA");
+            entity.ToTable("Brand");
 
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Estado)
-                .HasDefaultValue(true)
-                .HasColumnName("estado");
-            entity.Property(e => e.FechaCreacion)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
-                .HasColumnName("fechaCreacion");
-            entity.Property(e => e.FechaModificacion)
-                .HasColumnType("datetime")
-                .HasColumnName("fechaModificacion");
-            entity.Property(e => e.Nombre)
+            entity.HasIndex(e => e.Name, "IDX_Brand_Name");
+
+            entity.Property(e => e.BrandImageUrl)
+                .HasMaxLength(500)
+                .IsUnicode(false);
+            entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.LastUpdateDate).HasDefaultValueSql("(NULL)");
+            entity.Property(e => e.Name)
                 .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("nombre");
-            entity.Property(e => e.RutaImagen)
-                .HasMaxLength(300)
-                .IsUnicode(false)
-                .HasColumnName("rutaImagen");
+                .IsUnicode(false);
+            entity.Property(e => e.Status).HasDefaultValue(true);
         });
 
-        modelBuilder.Entity<Cliente>(entity =>
+        modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__CLIENTE__3213E83F703AD2D7");
+            entity.HasKey(e => e.Id).HasName("PK__Category__3214EC07692B652E");
 
-            entity.ToTable("CLIENTE");
+            entity.ToTable("Category");
 
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.ApellidoMaterno)
-                .HasMaxLength(60)
-                .IsUnicode(false)
-                .HasColumnName("apellidoMaterno");
-            entity.Property(e => e.ApellidoPaterno)
-                .HasMaxLength(60)
-                .IsUnicode(false)
-                .HasColumnName("apellidoPaterno");
-            entity.Property(e => e.Celular)
+            entity.HasIndex(e => e.Name, "IDX_Category_Name");
+
+            entity.HasIndex(e => e.ParentCategoryId, "IDX_Category_Parent");
+
+            entity.Property(e => e.CategoryImageUrl)
+                .HasMaxLength(500)
+                .IsUnicode(false);
+            entity.Property(e => e.CategoryLevel).HasDefaultValue(1);
+            entity.Property(e => e.LastUpdateDate).HasDefaultValueSql("(NULL)");
+            entity.Property(e => e.Name)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.ParentCategoryId).HasDefaultValueSql("(NULL)");
+
+            entity.HasOne(d => d.ParentCategory).WithMany(p => p.InverseParentCategory)
+                .HasForeignKey(d => d.ParentCategoryId)
+                .HasConstraintName("FK_Category_Parent");
+        });
+
+        modelBuilder.Entity<District>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__District__3214EC07D9645714");
+
+            entity.ToTable("District");
+
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.Province).WithMany(p => p.Districts)
+                .HasForeignKey(d => d.ProvinceId)
+                .HasConstraintName("FK_District_Province");
+        });
+
+        modelBuilder.Entity<PaymentHistory>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__PaymentH__3214EC0724AB445A");
+
+            entity.ToTable("PaymentHistory");
+
+            entity.HasIndex(e => e.SaleId, "IDX_PaymentHistory_Sale");
+
+            entity.HasIndex(e => new { e.SaleId, e.PaymentMethodId }, "UQ_PaymentHistory_Sale_Method").IsUnique();
+
+            entity.Property(e => e.Amount).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.PaymentDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Status)
                 .HasMaxLength(20)
                 .IsUnicode(false)
-                .HasColumnName("celular");
-            entity.Property(e => e.Clave)
+                .HasDefaultValue("Pending");
+
+            entity.HasOne(d => d.PaymentMethod).WithMany(p => p.PaymentHistories)
+                .HasForeignKey(d => d.PaymentMethodId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_PaymentHistory_Method");
+
+            entity.HasOne(d => d.Sale).WithMany(p => p.PaymentHistories)
+                .HasForeignKey(d => d.SaleId)
+                .HasConstraintName("FK_PaymentHistory_Sale");
+        });
+
+        modelBuilder.Entity<PaymentMethod>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__PaymentM__3214EC0765E45D59");
+
+            entity.ToTable("PaymentMethod");
+
+            entity.HasIndex(e => e.Name, "UQ__PaymentM__737584F6BB8E85EE").IsUnique();
+
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<Product>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Product__3214EC07147FCCF2");
+
+            entity.ToTable("Product");
+
+            entity.HasIndex(e => e.BrandId, "IDX_Product_Brand");
+
+            entity.HasIndex(e => e.CategoryId, "IDX_Product_Category");
+
+            entity.HasIndex(e => e.Name, "IDX_Product_Name");
+
+            entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Description)
                 .HasMaxLength(500)
-                .IsUnicode(false)
-                .HasColumnName("clave");
-            entity.Property(e => e.Confirmado).HasColumnName("confirmado");
-            entity.Property(e => e.Correo)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("correo");
-            entity.Property(e => e.Direccion)
+                .IsUnicode(false);
+            entity.Property(e => e.LastUpdateDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Name)
                 .HasMaxLength(200)
-                .IsUnicode(false)
-                .HasColumnName("direccion");
-            entity.Property(e => e.Estado).HasColumnName("estado");
-            entity.Property(e => e.FechaNacimiento).HasColumnName("fechaNacimiento");
-            entity.Property(e => e.FechaRegistro)
-                .HasColumnType("datetime")
-                .HasColumnName("fechaRegistro");
-            entity.Property(e => e.Genero)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("genero");
-            entity.Property(e => e.IdDistrito)
+                .IsUnicode(false);
+            entity.Property(e => e.ProductImageUrl)
+                .HasMaxLength(500)
+                .IsUnicode(false);
+            entity.Property(e => e.Status).HasDefaultValue(true);
+
+            entity.HasOne(d => d.Brand).WithMany(p => p.Products)
+                .HasForeignKey(d => d.BrandId)
+                .HasConstraintName("FK_Product_Brand");
+
+            entity.HasOne(d => d.Category).WithMany(p => p.Products)
+                .HasForeignKey(d => d.CategoryId)
+                .HasConstraintName("FK_Product_Category");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProductCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Product_CreatedBy");
+
+            entity.HasOne(d => d.LastUpdatedByNavigation).WithMany(p => p.ProductLastUpdatedByNavigations)
+                .HasForeignKey(d => d.LastUpdatedBy)
+                .HasConstraintName("FK_Product_LastUpdatedBy");
+        });
+
+        modelBuilder.Entity<ProductFlavor>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ProductF__3214EC07D7CAD35C");
+
+            entity.ToTable("ProductFlavor");
+
+            entity.Property(e => e.Name)
                 .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("idDistrito");
-            entity.Property(e => e.Nombre)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<ProductPresentation>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ProductP__3214EC07D9BB7B20");
+
+            entity.ToTable("ProductPresentation");
+
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.Unit)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<ProductVariant>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ProductV__3214EC0762A9DC82");
+
+            entity.ToTable("ProductVariant");
+
+            entity.HasIndex(e => e.BarCode, "IDX_ProductVariant_BarCode");
+
+            entity.HasIndex(e => e.ProductId, "IDX_ProductVariant_Product");
+
+            entity.HasIndex(e => e.Sku, "IDX_ProductVariant_Sku");
+
+            entity.HasIndex(e => e.BarCode, "UQ__ProductV__8A2ACA9B1B689FDF").IsUnique();
+
+            entity.HasIndex(e => e.Sku, "UQ__ProductV__CA1FD3C50394FAC6").IsUnique();
+
+            entity.Property(e => e.BarCode)
                 .HasMaxLength(60)
-                .IsUnicode(false)
-                .HasColumnName("nombre");
-            entity.Property(e => e.NumeroDocumento)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("numeroDocumento");
-            entity.Property(e => e.Restablecer).HasColumnName("restablecer");
-            entity.Property(e => e.Telefono)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("telefono");
-            entity.Property(e => e.TipoDocumento)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("tipoDocumento");
-            entity.Property(e => e.Token)
+                .IsUnicode(false);
+            entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Description)
                 .HasMaxLength(500)
-                .IsUnicode(false)
-                .HasColumnName("token");
-
-            entity.HasOne(d => d.Distrito).WithMany(p => p.Clientes)
-                .HasForeignKey(d => d.IdDistrito)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__CLIENTE__idDistr__6754599E");
-        });
-
-        modelBuilder.Entity<Departamento>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__DEPARTAM__3213E83F1A2D8106");
-
-            entity.ToTable("DEPARTAMENTO");
-
-            entity.Property(e => e.Id)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("id");
-            entity.Property(e => e.Nombre)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("nombre");
-        });
-
-        modelBuilder.Entity<DetalleVenta>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__DETALLE___3213E83F62975C87");
-
-            entity.ToTable("DETALLE_VENTA");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Cantidad).HasColumnName("cantidad");
-            entity.Property(e => e.IdProducto).HasColumnName("idProducto");
-            entity.Property(e => e.IdVenta).HasColumnName("idVenta");
-            entity.Property(e => e.PrecioUnitarioHistorico)
-                .HasColumnType("decimal(18, 2)")
-                .HasColumnName("precioUnitarioHistorico");
-            entity.Property(e => e.Subtotal)
-                .HasColumnType("decimal(18, 2)")
-                .HasColumnName("subtotal");
-
-            entity.HasOne(d => d.Producto).WithMany(p => p.DetalleVentas)
-                .HasForeignKey(d => d.IdProducto)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__DETALLE_V__idPro__797309D9");
-
-            entity.HasOne(d => d.Venta).WithMany(p => p.DetalleVentas)
-                .HasForeignKey(d => d.IdVenta)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__DETALLE_V__idVen__787EE5A0");
-        });
-
-        modelBuilder.Entity<Distrito>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__DISTRITO__3213E83F5666128F");
-
-            entity.ToTable("DISTRITO");
-
-            entity.Property(e => e.Id)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("id");
-            entity.Property(e => e.IdProvincia)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("idProvincia");
-            entity.Property(e => e.Nombre)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("nombre");
-
-            entity.HasOne(d => d.Provincia).WithMany(p => p.Distritos)
-                .HasForeignKey(d => d.IdProvincia)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__DISTRITO__idProv__619B8048");
-        });
-
-        modelBuilder.Entity<HistorialRefreshToken>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__HISTORIA__3213E83F6D1919BD");
-
-            entity.ToTable("HISTORIAL_REFRESH_TOKEN");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.AccessToken)
+                .IsUnicode(false);
+            entity.Property(e => e.LastUpdateDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.ProductVariantImageUrl)
                 .HasMaxLength(500)
-                .IsUnicode(false)
-                .HasColumnName("accessToken");
-            entity.Property(e => e.FechaCreacion)
-                .HasColumnType("datetime")
-                .HasColumnName("fechaCreacion");
-            entity.Property(e => e.FechaExpiracion)
-                .HasColumnType("datetime")
-                .HasColumnName("fechaExpiracion");
-            entity.Property(e => e.IdUsuario).HasColumnName("idUsuario");
-            entity.Property(e => e.RefreshToken)
-                .HasMaxLength(500)
-                .IsUnicode(false)
-                .HasColumnName("refreshToken");
+                .IsUnicode(false);
+            entity.Property(e => e.Sku)
+                .HasMaxLength(50)
+                .IsUnicode(false);
 
-            entity.HasOne(d => d.Usuario).WithMany(p => p.HistorialRefreshTokens)
-                .HasForeignKey(d => d.IdUsuario)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__HISTORIAL__idUsu__6A30C649");
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProductVariantCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("FK_ProductVariant_CreatedBy");
+
+            entity.HasOne(d => d.Flavor).WithMany(p => p.ProductVariants)
+                .HasForeignKey(d => d.FlavorId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_ProductVariant_Flavor");
+
+            entity.HasOne(d => d.LastUpdatedByNavigation).WithMany(p => p.ProductVariantLastUpdatedByNavigations)
+                .HasForeignKey(d => d.LastUpdatedBy)
+                .HasConstraintName("FK_ProductVariant_LastUpdatedBy");
+
+            entity.HasOne(d => d.Presentation).WithMany(p => p.ProductVariants)
+                .HasForeignKey(d => d.PresentationId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_ProductVariant_Presentation");
+
+            entity.HasOne(d => d.Product).WithMany(p => p.ProductVariants)
+                .HasForeignKey(d => d.ProductId)
+                .HasConstraintName("FK_ProductVariant_Product");
         });
 
-        modelBuilder.Entity<Marca>(entity =>
+        modelBuilder.Entity<Province>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__MARCA__3213E83F04F631E0");
+            entity.HasKey(e => e.Id).HasName("PK__Province__3214EC070C0B6F00");
 
-            entity.ToTable("MARCA");
+            entity.ToTable("Province");
 
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Estado)
-                .HasDefaultValue(true)
-                .HasColumnName("estado");
-            entity.Property(e => e.FechaCreacion)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
-                .HasColumnName("fechaCreacion");
-            entity.Property(e => e.FechaModificacion)
-                .HasColumnType("datetime")
-                .HasColumnName("fechaModificacion");
-            entity.Property(e => e.Nombre)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("nombre");
-            entity.Property(e => e.RutaImagen)
-                .HasMaxLength(300)
-                .IsUnicode(false)
-                .HasColumnName("rutaImagen");
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.Region).WithMany(p => p.Provinces)
+                .HasForeignKey(d => d.RegionId)
+                .HasConstraintName("FK_Province_Region");
         });
 
-        modelBuilder.Entity<Producto>(entity =>
+        modelBuilder.Entity<Region>(entity =>
         {
-            entity.ToTable("PRODUCTO");
+            entity.HasKey(e => e.Id).HasName("PK__Region__3214EC07C13571A7");
 
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Descripcion)
-                .HasMaxLength(500)
-                .IsUnicode(false)
-                .HasColumnName("descripcion");
-            entity.Property(e => e.Estado)
-                .HasDefaultValue(true)
-                .HasColumnName("estado");
-            entity.Property(e => e.FechaCreacion)
-                .HasDefaultValueSql("(getdate())")
-                .HasColumnType("datetime")
-                .HasColumnName("fechaCreacion");
-            entity.Property(e => e.FechaModificacion)
-                .HasColumnType("datetime")
-                .HasColumnName("fechaModificacion");
-            entity.Property(e => e.IdCategoria).HasColumnName("idCategoria");
-            entity.Property(e => e.IdMarca).HasColumnName("idMarca");
-            entity.Property(e => e.Nombre)
+            entity.ToTable("Region");
+
+            entity.HasIndex(e => e.RegionCode, "UQ__Region__82432A47B19C102E").IsUnique();
+
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.RegionCode)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<Role>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Role__3214EC07834332E4");
+
+            entity.ToTable("Role");
+
+            entity.HasIndex(e => e.Name, "UQ__Role__737584F65012444D").IsUnique();
+
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<Sale>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Sale__3214EC075ACD111D");
+
+            entity.ToTable("Sale");
+
+            entity.HasIndex(e => e.SaleDate, "IDX_Sale_Date");
+
+            entity.HasIndex(e => e.SystemUserId, "IDX_Sale_User");
+
+            entity.HasIndex(e => new { e.SystemUserId, e.SaleDate }, "IDX_Sale_User_Date");
+
+            entity.HasIndex(e => e.TransactionId, "UQ_Sale_TransactionId").IsUnique();
+
+            entity.HasIndex(e => e.TransactionId, "UQ__Sale__55433A6A0579D241").IsUnique();
+
+            entity.HasIndex(e => e.InvoiceNumber, "UQ__Sale__D776E9818E793AB0").IsUnique();
+
+            entity.Property(e => e.Address)
                 .HasMaxLength(200)
-                .IsUnicode(false)
-                .HasColumnName("nombre");
-            entity.Property(e => e.Precio)
-                .HasColumnType("decimal(18, 2)")
-                .HasColumnName("precio");
-            entity.Property(e => e.RutaImagen)
-                .HasMaxLength(500)
-                .IsUnicode(false)
-                .HasColumnName("rutaImagen");
-            entity.Property(e => e.Stock).HasColumnName("stock");
-
-            entity.HasOne(d => d.Categoria).WithMany(p => p.Productos)
-                .HasForeignKey(d => d.IdCategoria)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__PRODUCTO__idCate__534D60F1");
-
-            entity.HasOne(d => d.Marca).WithMany(p => p.Productos)
-                .HasForeignKey(d => d.IdMarca)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__PRODUCTO__idMarc__52593CB8");
-        });
-
-        modelBuilder.Entity<Provincia>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__PROVINCI__3213E83FC9DF915B");
-
-            entity.ToTable("PROVINCIA");
-
-            entity.Property(e => e.Id)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("id");
-            entity.Property(e => e.IdDepartamento)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("idDepartamento");
-            entity.Property(e => e.Nombre)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("nombre");
-
-            entity.HasOne(d => d.Departamento).WithMany(p => p.Provincias)
-                .HasForeignKey(d => d.IdDepartamento)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__PROVINCIA__idDep__5EBF139D");
-        });
-
-        modelBuilder.Entity<Usuario>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__USUARIO__3213E83F0C242567");
-
-            entity.ToTable("USUARIO");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.ApellidoMaterno)
-                .HasMaxLength(60)
-                .IsUnicode(false)
-                .HasColumnName("apellidoMaterno");
-            entity.Property(e => e.ApellidoPaterno)
-                .HasMaxLength(60)
-                .IsUnicode(false)
-                .HasColumnName("apellidoPaterno");
-            entity.Property(e => e.Celular)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("celular");
-            entity.Property(e => e.Clave)
-                .HasMaxLength(500)
-                .IsUnicode(false)
-                .HasColumnName("clave");
-            entity.Property(e => e.Confirmado).HasColumnName("confirmado");
-            entity.Property(e => e.Correo)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("correo");
-            entity.Property(e => e.Direccion)
-                .HasMaxLength(200)
-                .IsUnicode(false)
-                .HasColumnName("direccion");
-            entity.Property(e => e.Estado).HasColumnName("estado");
-            entity.Property(e => e.FechaNacimiento).HasColumnName("fechaNacimiento");
-            entity.Property(e => e.FechaRegistro)
-                .HasColumnType("datetime")
-                .HasColumnName("fechaRegistro");
-            entity.Property(e => e.Genero)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("genero");
-            entity.Property(e => e.IdDistrito)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("idDistrito");
-            entity.Property(e => e.Nombre)
-                .HasMaxLength(60)
-                .IsUnicode(false)
-                .HasColumnName("nombre");
-            entity.Property(e => e.NumeroDocumento)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("numeroDocumento");
-            entity.Property(e => e.Restablecer).HasColumnName("restablecer");
-            entity.Property(e => e.Telefono)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("telefono");
-            entity.Property(e => e.TipoDocumento)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("tipoDocumento");
-            entity.Property(e => e.Token)
-                .HasMaxLength(500)
-                .IsUnicode(false)
-                .HasColumnName("token");
-
-            entity.HasOne(d => d.Distrito).WithMany(p => p.Usuarios)
-                .HasForeignKey(d => d.IdDistrito)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__USUARIO__idDistr__6477ECF3");
-        });
-
-        modelBuilder.Entity<Venta>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__VENTA__3213E83FA23F936B");
-
-            entity.ToTable("VENTA");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Celular)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("celular");
-            entity.Property(e => e.Contacto)
+                .IsUnicode(false);
+            entity.Property(e => e.Contact)
                 .HasMaxLength(150)
-                .IsUnicode(false)
-                .HasColumnName("contacto");
-            entity.Property(e => e.Direccion)
-                .HasMaxLength(200)
-                .IsUnicode(false)
-                .HasColumnName("direccion");
-            entity.Property(e => e.FechaVenta)
-                .HasColumnType("datetime")
-                .HasColumnName("fechaVenta");
-            entity.Property(e => e.IdCliente).HasColumnName("idCliente");
-            entity.Property(e => e.IdDistrito)
+                .IsUnicode(false);
+            entity.Property(e => e.InvoiceNumber)
                 .HasMaxLength(50)
+                .IsUnicode(false);
+            entity.Property(e => e.InvoiceType)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.LastUpdateDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Mobile)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.Phone)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.SaleDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Status)
+                .HasMaxLength(20)
                 .IsUnicode(false)
-                .HasColumnName("idDistrito");
-            entity.Property(e => e.IdTransaccion)
-                .HasMaxLength(70)
-                .IsUnicode(false)
-                .HasColumnName("idTransaccion");
-            entity.Property(e => e.MontoTotal)
-                .HasColumnType("decimal(18, 2)")
-                .HasColumnName("montoTotal");
-            entity.Property(e => e.NumeroComprobante)
+                .HasDefaultValue("Pending");
+            entity.Property(e => e.TotalAmount).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.TransactionId)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.SaleCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_Sale_CreatedBy");
+
+            entity.HasOne(d => d.District).WithMany(p => p.Sales)
+                .HasForeignKey(d => d.DistrictId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Sale_District");
+
+            entity.HasOne(d => d.LastUpdatedByNavigation).WithMany(p => p.SaleLastUpdatedByNavigations)
+                .HasForeignKey(d => d.LastUpdatedBy)
+                .HasConstraintName("FK_Sale_LastUpdatedBy");
+
+            entity.HasOne(d => d.SystemUser).WithMany(p => p.SaleSystemUsers)
+                .HasForeignKey(d => d.SystemUserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_Sale_SystemUser");
+        });
+
+        modelBuilder.Entity<SaleDetail>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__SaleDeta__3214EC07BA5560B6");
+
+            entity.ToTable("SaleDetail");
+
+            entity.HasIndex(e => e.ProductVariantId, "IDX_SaleDetail_ProductVariant");
+
+            entity.HasIndex(e => e.SaleId, "IDX_SaleDetail_Sale");
+
+            entity.HasIndex(e => new { e.SaleId, e.ProductVariantId }, "IDX_SaleDetail_Sale_ProductVariant");
+
+            entity.HasIndex(e => new { e.SaleId, e.ProductVariantId }, "UQ_SaleDetail").IsUnique();
+
+            entity.Property(e => e.HistoricalUnitPrice).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.TotalPrice)
+                .HasComputedColumnSql("([Quantity]*[HistoricalUnitPrice])", true)
+                .HasColumnType("decimal(21, 2)");
+
+            entity.HasOne(d => d.ProductVariant).WithMany(p => p.SaleDetails)
+                .HasForeignKey(d => d.ProductVariantId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SaleDetail_ProductVariant");
+
+            entity.HasOne(d => d.Sale).WithMany(p => p.SaleDetails)
+                .HasForeignKey(d => d.SaleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_SaleDetail_Sale");
+        });
+
+        modelBuilder.Entity<SystemUser>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__SystemUs__3214EC07BD9CCD43");
+
+            entity.ToTable("SystemUser");
+
+            entity.HasIndex(e => e.Email, "IDX_SystemUser_Email");
+
+            entity.HasIndex(e => e.UserTypeId, "IDX_SystemUser_UserType");
+
+            entity.HasIndex(e => e.DocumentNumber, "UQ__SystemUs__689939182F892A97").IsUnique();
+
+            entity.HasIndex(e => e.Email, "UQ__SystemUs__A9D10534C579568E").IsUnique();
+
+            entity.Property(e => e.Address)
+                .HasMaxLength(200)
+                .IsUnicode(false);
+            entity.Property(e => e.DocumentNumber)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.DocumentType)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.Email)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.FirstName)
+                .HasMaxLength(60)
+                .IsUnicode(false);
+            entity.Property(e => e.Gender)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.LastName)
+                .HasMaxLength(60)
+                .IsUnicode(false);
+            entity.Property(e => e.Mobile)
+                .HasMaxLength(20)
+                .IsUnicode(false);
+            entity.Property(e => e.PasswordHash)
                 .HasMaxLength(500)
-                .IsUnicode(false)
-                .HasColumnName("numeroComprobante");
-            entity.Property(e => e.Telefono)
+                .IsUnicode(false);
+            entity.Property(e => e.Phone)
                 .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("telefono");
-            entity.Property(e => e.TipoComprobante)
-                .HasMaxLength(20)
-                .IsUnicode(false)
-                .HasColumnName("tipoComprobante");
+                .IsUnicode(false);
+            entity.Property(e => e.RegistrationDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Status).HasDefaultValue(true);
 
-            entity.HasOne(d => d.Cliente).WithMany(p => p.Ventas)
-                .HasForeignKey(d => d.IdCliente)
+            entity.HasOne(d => d.UserType).WithMany(p => p.SystemUsers)
+                .HasForeignKey(d => d.UserTypeId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__VENTA__idCliente__6D0D32F4");
+                .HasConstraintName("FK_SystemUser_UserType");
+        });
 
-            entity.HasOne(d => d.Distrito).WithMany(p => p.Ventas)
-                .HasForeignKey(d => d.IdDistrito)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__VENTA__idDistrit__6E01572D");
+        modelBuilder.Entity<UserRole>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__UserRole__3214EC07010AE440");
+
+            entity.ToTable("UserRole");
+
+            entity.HasIndex(e => new { e.SystemUserId, e.RoleId }, "UQ_SystemUser_Role").IsUnique();
+
+            entity.HasOne(d => d.Role).WithMany(p => p.UserRoles)
+                .HasForeignKey(d => d.RoleId)
+                .HasConstraintName("FK__UserRole__RoleId__68487DD7");
+
+            entity.HasOne(d => d.SystemUser).WithMany(p => p.UserRoles)
+                .HasForeignKey(d => d.SystemUserId)
+                .HasConstraintName("FK__UserRole__System__6754599E");
+        });
+
+        modelBuilder.Entity<UserType>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__UserType__3214EC0758FC186E");
+
+            entity.ToTable("UserType");
+
+            entity.HasIndex(e => e.Name, "UQ__UserType__737584F60A958DF7").IsUnique();
+
+            entity.Property(e => e.Name)
+                .HasMaxLength(50)
+                .IsUnicode(false);
         });
 
         OnModelCreatingPartial(modelBuilder);

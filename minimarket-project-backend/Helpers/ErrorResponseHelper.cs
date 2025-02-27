@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using minimarket_project_backend.Models.Responses;
+using minimarket_project_backend.Common.Responses;
 
 namespace minimarket_project_backend.Helpers
 {
@@ -11,7 +11,7 @@ namespace minimarket_project_backend.Helpers
         public IActionResult CreateServerErrorResponse(Exception ex)
         {
             return new ObjectResult(
-                new ApiResponse
+                new ErrorResponse
                 {
                     StatusCode = 500,
                     Message = $"Ocurrió un error: {ex.Message}",
@@ -24,7 +24,7 @@ namespace minimarket_project_backend.Helpers
         // Crea una respuesta de error genérica para Bad Request (400)
         public IActionResult CreateBadRequestResponse(string message)
         {
-            return new BadRequestObjectResult(new ApiResponse
+            return new BadRequestObjectResult(new ErrorResponse
             {
                 StatusCode = 400,
                 Message = message,
@@ -41,7 +41,7 @@ namespace minimarket_project_backend.Helpers
                 ? $"con el ID {identifier}."
                 : $"con el nombre '{identifier}'.";
 
-            return new NotFoundObjectResult(new ApiResponse
+            return new NotFoundObjectResult(new ErrorResponse
             {
                 StatusCode = 404,
                 Message = $"No existe una {typeof(TEntity).Name.ToLower()} {identifierMessage}",
