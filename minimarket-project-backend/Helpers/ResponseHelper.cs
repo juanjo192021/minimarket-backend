@@ -27,36 +27,36 @@ namespace minimarket_project_backend.Helpers
 
         // Creación, búsqueda y actualización la respuesta cuando todo salio sasticfactoriamente
 
-        // TEntity entities,int statusCode, string message
-        public IActionResult CreateSuccessResponse<TEntity>(TEntity entities, int statusCode, string message, string actionName = null, object routeValues = null)
+        public IActionResult CreateSuccessResponse<TEntity>(
+            TEntity entities, 
+            int statusCode, 
+            string message, 
+            string actionName = null,
+            string controllerName = null,
+            object routeValues = null)
         {
-            // return new OkObjectResult(
-            //    new DataResponse<TEntity>
-            //    {
-            //        StatusCode = statusCode,
-            //        Message = message,   
-            //        Success = true,
-            //        Data = entities
-            //    }
-            //);
-
             var response = new DataResponse<TEntity>
             {
-                StatusCode = statusCode,
+                StatusCode = actionName != null ? StatusCodes.Status201Created : statusCode,
                 Message = message,
                 Success = true,
                 Data = entities
             };
 
-            return actionName != null ? new CreatedAtActionResult(actionName, null, routeValues, response) : new OkObjectResult(response);
+            if (!string.IsNullOrEmpty(actionName) && !string.IsNullOrEmpty(controllerName))
+            {
+                return new CreatedAtActionResult(actionName, controllerName, routeValues, response);
+            }
+
+            return new ObjectResult(response) { StatusCode = statusCode };
         }
 
         // Eliminación satisfactoria
 
-        public IActionResult CreateSuccessDeleteResponse(string message)
+        public IActionResult CreateSuccessDeleteResponse<TEntity>(TEntity entities, string message)
         {
             return new OkObjectResult(
-                new ErrorResponse
+                new DataResponse<TEntity>
                 {
                     StatusCode = 200,
                     Message = message,

@@ -12,7 +12,6 @@ namespace minimarket_project_backend.Services.Implementation
         private readonly IMapper _mapper;
         private readonly DataResponse<List<ProductDTO>> _dataResponseList;
         private readonly DataResponse<ProductDTO> _dataResponse;
-        private readonly ErrorResponse _apiResponse;
         private readonly QueryHelper _queryHelper;
         private readonly ResponseHelper _responseHelper;
         private readonly ErrorResponseHelper _errorResponseHelper;
@@ -24,7 +23,6 @@ namespace minimarket_project_backend.Services.Implementation
             _mapper = mapper;
             _dataResponseList = new DataResponse<List<ProductDTO>>();
             _dataResponse = new DataResponse<ProductDTO>();
-            _apiResponse = new ErrorResponse();
             _queryHelper = new QueryHelper();
             _responseHelper = new ResponseHelper();
             _errorResponseHelper = new ErrorResponseHelper();

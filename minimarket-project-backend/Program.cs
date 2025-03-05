@@ -1,11 +1,10 @@
-using FluentValidation;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using minimarket_project_backend.Common.Validator;
 using minimarket_project_backend.Models;
 using minimarket_project_backend.Services;
 using minimarket_project_backend.Services.Implementation;
-using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,20 +35,21 @@ builder.Services.AddCors(opt =>
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IFirebaseStorageService, FirebaseStorageService>();
+builder.Services.AddScoped<IImageManagerService, ImageManagerService>();
 
 // 6) Inyección de AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 //7) Agregar todos validaciones que configuremos en la clase Program
 
-builder.Services.Configure<ApiBehaviorOptions>(options =>
-{
-    options.SuppressModelStateInvalidFilter = true;
-});
+//builder.Services.Configure<ApiBehaviorOptions>(options =>
+//{
+//    options.SuppressModelStateInvalidFilter = true;
+//});
 
 
-builder.Services.AddValidatorsFromAssemblyContaining<BrandRequestValidator>();
-builder.Services.AddFluentValidationAutoValidation();
+//builder.Services.AddValidatorsFromAssemblyContaining<BrandRequestValidator>();
+//builder.Services.AddFluentValidationAutoValidation();
 
 var app = builder.Build();
 

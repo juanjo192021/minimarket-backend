@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace minimarket_project_backend.Models;
 
@@ -19,9 +20,11 @@ public partial class Category
 
     public DateTime? LastUpdateDate { get; set; }
 
+    [JsonIgnore]
     public virtual ICollection<Category> InverseParentCategory { get; set; } = new List<Category>();
 
     public virtual Category? ParentCategory { get; set; }
 
+    [JsonIgnore]
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }

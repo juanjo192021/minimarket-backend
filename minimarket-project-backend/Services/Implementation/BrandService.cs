@@ -15,17 +15,20 @@ namespace minimarket_project_backend.Services.Implementation
         private readonly QueryHelper _queryHelper;
         private readonly ResponseHelper _responseHelper;
         private readonly IFirebaseStorageService _firebaseStorageService;
+        private readonly IImageManagerService _imageManagerService;
 
         public BrandService(
             DbMinimarketContext dbcontext, 
             IMapper mapper, 
-            IFirebaseStorageService firebaseStorageService)
+            IFirebaseStorageService firebaseStorageService,
+            IImageManagerService imageManagerService)
         {
             _dbcontext = dbcontext;
             _mapper = mapper;
             _queryHelper = new QueryHelper();
             _responseHelper = new ResponseHelper();
             _firebaseStorageService = firebaseStorageService;
+            _imageManagerService = imageManagerService;
         }
         
 
@@ -68,11 +71,30 @@ namespace minimarket_project_backend.Services.Implementation
                 return marca;
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
         }
+
+        public async Task<Brand?> SearchByName(string name)
+        {
+            try
+            {
+                var marca = await _dbcontext.Brands.FirstOrDefaultAsync(x => x.Name == name);
+
+                if (marca == null)
+                    return null;
+
+                return marca;
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
         public async Task<Brand?> Create(BrandRequestDTO brandRequestDTO)
         {
             try
@@ -81,16 +103,7 @@ namespace minimarket_project_backend.Services.Implementation
 
                 brand.CreationDate = DateTime.Now;
 
-                //TODO: Revisar si se puede mejorar la lógica de la imagen
-                // Si hay una imagen, subirla a Firebase
-                if (brandRequestDTO.fileImage != null)
-                {
-                    using var stream = brandRequestDTO.fileImage.OpenReadStream();
-                    string fileName = $"{Guid.NewGuid()}_{brandRequestDTO.fileImage.FileName}";
-
-                    brand.BrandImageUrl = await _firebaseStorageService.UploadFileAsync("Brands",stream, fileName,null); // Guardar la URL en la BD
-                }
-                //TODO: Revisar si se puede mejorar la lógica de la imagen
+                brand.BrandImageUrl = await _imageManagerService.UploadImageAsync(brandRequestDTO.fileImage, "Brands");
 
                 _dbcontext.Brands.Add(brand);
                 int filasAfectadas = await _dbcontext.SaveChangesAsync();
@@ -115,15 +128,7 @@ namespace minimarket_project_backend.Services.Implementation
                 
                 brand.Name = brandRequestDTO.name ?? brand.Name;
 
-                //TODO: Revisar si se puede mejorar la lógica de la imagen
-                if (brandRequestDTO.fileImage != null)
-                {
-                    using var stream = brandRequestDTO.fileImage.OpenReadStream();
-                    string fileName = $"{Guid.NewGuid()}_{brandRequestDTO.fileImage.FileName}";
-                    brand.BrandImageUrl = await _firebaseStorageService.UploadFileAsync("Brands", stream, fileName, brand.BrandImageUrl);
-                }
-                //TODO: Revisar si se puede mejorar la lógica de la imagen
-
+                brand.BrandImageUrl = await _imageManagerService.UploadImageAsync(brandRequestDTO.fileImage, "Brands", brand.BrandImageUrl);
                 brand.Status = brandRequestDTO.status ?? brand.Status;
                 brand.LastUpdateDate = DateTime.Now;
 
@@ -145,16 +150,35 @@ namespace minimarket_project_backend.Services.Implementation
             }
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task<bool> Deactivated(Brand brand)
         {
             try
             {
-                var brand = await _dbcontext.Brands.FindAsync(id);
-                if (brand == null) return false;
-
                 brand.Status = false;
 
                 _dbcontext.Brands.Update(brand);
+
+                int filasAfectadas = await _dbcontext.SaveChangesAsync();
+
+                if (brand.Id > 0 && filasAfectadas > 0)
+                {
+                    return true;
+                }
+
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+
+        public async Task<bool> Delete(Brand brand)
+        {
+            try
+            {
+                _dbcontext.Brands.Remove(brand);
 
                 int filasAfectadas = await _dbcontext.SaveChangesAsync();
 
