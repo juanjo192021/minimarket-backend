@@ -21,6 +21,8 @@ public partial class DbMinimarketContext : DbContext
 
     public virtual DbSet<District> Districts { get; set; }
 
+    public virtual DbSet<Menu> Menus { get; set; }
+
     public virtual DbSet<PaymentHistory> PaymentHistories { get; set; }
 
     public virtual DbSet<PaymentMethod> PaymentMethods { get; set; }
@@ -39,6 +41,10 @@ public partial class DbMinimarketContext : DbContext
 
     public virtual DbSet<Role> Roles { get; set; }
 
+    public virtual DbSet<RoleMenu> RoleMenus { get; set; }
+
+    public virtual DbSet<RolePermission> RolePermissions { get; set; }
+
     public virtual DbSet<Sale> Sales { get; set; }
 
     public virtual DbSet<SaleDetail> SaleDetails { get; set; }
@@ -49,7 +55,9 @@ public partial class DbMinimarketContext : DbContext
 
     public virtual DbSet<UserType> UserTypes { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-5KD39FJ\\SQLEXPRESS;DataBase=DB_MINIMARKET;Integrated Security=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -110,6 +118,27 @@ public partial class DbMinimarketContext : DbContext
             entity.HasOne(d => d.Province).WithMany(p => p.Districts)
                 .HasForeignKey(d => d.ProvinceId)
                 .HasConstraintName("FK_District_Province");
+        });
+
+        modelBuilder.Entity<Menu>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Menu__3214EC07944B5555");
+
+            entity.ToTable("Menu");
+
+            entity.HasIndex(e => e.ParentMenuId, "IDX_Menu_Parent");
+
+            entity.Property(e => e.Name)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.ParentMenuId).HasDefaultValueSql("(NULL)");
+            entity.Property(e => e.Url)
+                .HasMaxLength(500)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.ParentMenu).WithMany(p => p.InverseParentMenu)
+                .HasForeignKey(d => d.ParentMenuId)
+                .HasConstraintName("FK_Menu_Parent");
         });
 
         modelBuilder.Entity<PaymentHistory>(entity =>
@@ -317,6 +346,44 @@ public partial class DbMinimarketContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+        });
+
+        modelBuilder.Entity<RoleMenu>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Role_Men__3214EC074CDF060D");
+
+            entity.ToTable("Role_Menu");
+
+            entity.HasIndex(e => e.MenuId, "IDX_RoleMenu_Menu");
+
+            entity.HasIndex(e => e.RoleId, "IDX_RoleMenu_Role");
+
+            entity.HasIndex(e => new { e.RoleId, e.MenuId }, "UQ_Role_Menu").IsUnique();
+
+            entity.HasOne(d => d.Menu).WithMany(p => p.RoleMenus)
+                .HasForeignKey(d => d.MenuId)
+                .HasConstraintName("FK_RoleMenu_Menu");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.RoleMenus)
+                .HasForeignKey(d => d.RoleId)
+                .HasConstraintName("FK_RoleMenu_Role");
+        });
+
+        modelBuilder.Entity<RolePermission>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__Role_Per__3214EC0714249465");
+
+            entity.ToTable("Role_Permissions");
+
+            entity.Property(e => e.CanRead).HasDefaultValue(true);
+            entity.Property(e => e.Entity)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+
+            entity.HasOne(d => d.IdRoleNavigation).WithMany(p => p.RolePermissions)
+                .HasForeignKey(d => d.IdRole)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Role_Perm__IdRol__589C25F3");
         });
 
         modelBuilder.Entity<Sale>(entity =>

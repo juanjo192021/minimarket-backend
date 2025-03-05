@@ -1,7 +1,4 @@
-
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using minimarket_project_backend.Common.Validator;
 using minimarket_project_backend.Models;
 using minimarket_project_backend.Services;
 using minimarket_project_backend.Services.Implementation;

@@ -214,6 +214,42 @@ CREATE TABLE PaymentHistory (
 	CONSTRAINT UQ_PaymentHistory_Sale_Method UNIQUE (SaleId, PaymentMethodId)
 );
 
+-- Table: Menu (Administrative dashboard menus - Similar to Category for hierarchical structure)
+CREATE TABLE Menu (
+    Id INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+    Name VARCHAR(100) NOT NULL,
+    Url VARCHAR(500) NOT NULL,
+    ParentMenuId INT DEFAULT NULL, -- Para manejar submenús
+    CONSTRAINT FK_Menu_Parent FOREIGN KEY (ParentMenuId) REFERENCES Menu(Id) ON DELETE NO ACTION
+);
+
+-- Table: Role_Menu (Permissions for menu access based on role)
+CREATE TABLE Role_Menu (
+    Id INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+    RoleId INT NOT NULL,
+    MenuId INT NOT NULL,
+    CONSTRAINT FK_RoleMenu_Role FOREIGN KEY (RoleId) REFERENCES Role(Id) ON DELETE CASCADE,
+    CONSTRAINT FK_RoleMenu_Menu FOREIGN KEY (MenuId) REFERENCES Menu(Id) ON DELETE CASCADE,
+    CONSTRAINT UQ_Role_Menu UNIQUE (RoleId, MenuId) -- Evita duplicados
+);
+
+-- Table: ROLE_PERMISSIONS (CRUD permissions for each role)
+CREATE TABLE Role_Permissions (
+    Id INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
+    IdRole INT NOT NULL,
+    Entity VARCHAR(100) NOT NULL, -- Example: Product, Category, User
+    CanCreate BIT NOT NULL DEFAULT 0,
+    CanRead BIT NOT NULL DEFAULT 1,
+    CanUpdate BIT NOT NULL DEFAULT 0,
+    CanDelete BIT NOT NULL DEFAULT 0,
+    FOREIGN KEY (idRole) REFERENCES Role(id)
+);
+
+-- Indexes for optimization
+CREATE INDEX IDX_Menu_Parent ON Menu(ParentMenuId);
+CREATE INDEX IDX_RoleMenu_Role ON Role_Menu(RoleId);
+CREATE INDEX IDX_RoleMenu_Menu ON Role_Menu(MenuId);
+
 CREATE INDEX IDX_Category_Parent ON Category(ParentCategoryId);
 CREATE INDEX IDX_Category_Name ON Category(Name);
 CREATE INDEX IDX_Brand_Name ON Brand(Name);
