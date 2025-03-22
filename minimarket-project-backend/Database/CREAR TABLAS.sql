@@ -1,17 +1,20 @@
 -- CREATE DATABASE DB_MINIMARKET
 -- USE DB_MINIMARKET;
 -- SELECT @@SERVERNAME;
+-- Scaffold-DbContext "Server=Juanjo\SQLEXPRESS;DataBase=DB_MINIMARKET;Integrated Security=True;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutPutDir Models -force
 
 
 -- Table: Category (Main Categories)
 CREATE TABLE Category (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Name VARCHAR(100) NOT NULL,
+    Description VARCHAR(500),
     CategoryImageUrl VARCHAR(500) DEFAULT NULL,
     ParentCategoryId INT DEFAULT NULL,
 	CategoryLevel INT DEFAULT 1 NOT NULL,
     CreationDate DATETIME2 DEFAULT GETDATE() NOT NULL,
     LastUpdateDate DATETIME2 DEFAULT NULL,
+	Status BIT NOT NULL DEFAULT 1,
     CONSTRAINT FK_Category_Parent FOREIGN KEY (ParentCategoryId) REFERENCES Category(Id) ON DELETE NO ACTION
 );
 
@@ -29,7 +32,9 @@ CREATE TABLE Brand (
 -- Table: UserType (User categories)
 CREATE TABLE UserType (
     Id INT PRIMARY KEY IDENTITY(1,1),
-    Name VARCHAR(50) NOT NULL UNIQUE -- Admin, Customer, Employee, etc.
+    Name VARCHAR(50) NOT NULL UNIQUE, -- Admin, Customer, Employee, etc.
+    Description VARCHAR(500),
+	Status BIT NOT NULL DEFAULT 1,
 );
 
 -- Table: SystemUser 
@@ -58,7 +63,9 @@ CREATE TABLE SystemUser (
 -- Table: Role
 CREATE TABLE Role (
     Id INT PRIMARY KEY IDENTITY(1,1),
-    Name VARCHAR(50) NOT NULL UNIQUE
+    Name VARCHAR(50) NOT NULL UNIQUE,
+    Description VARCHAR(500),
+	Status BIT NOT NULL DEFAULT 1,
 );
 
 -- Table: UserRole
@@ -93,13 +100,17 @@ CREATE TABLE Product (
 CREATE TABLE ProductPresentation (
     Id INT PRIMARY KEY IDENTITY(1,1),
     Name VARCHAR(50) NOT NULL,
-    Unit VARCHAR(20) NOT NULL
+    Unit VARCHAR(20) NOT NULL,
+    Description VARCHAR(500),
+	Status BIT NOT NULL DEFAULT 1,
 );
 
 -- Table: ProductFlavor
 CREATE TABLE ProductFlavor (
     Id INT PRIMARY KEY IDENTITY(1,1),
-    Name VARCHAR(50) NOT NULL
+    Name VARCHAR(50) NOT NULL,
+    Description VARCHAR(500),
+	Status BIT NOT NULL DEFAULT 1,
 );
 
 -- Table: ProductVariant
@@ -118,6 +129,7 @@ CREATE TABLE ProductVariant (
     LastUpdateDate DATETIME2 DEFAULT GETDATE() NULL,
     CreatedBy INT NOT NULL,
     LastUpdatedBy INT NULL,
+	Status BIT NOT NULL DEFAULT 1,
     CONSTRAINT FK_ProductVariant_Product FOREIGN KEY (ProductId) REFERENCES Product(Id) ON DELETE CASCADE,
 	CONSTRAINT FK_ProductVariant_Presentation FOREIGN KEY (PresentationId) REFERENCES ProductPresentation(Id) ON DELETE SET NULL,
 	CONSTRAINT FK_ProductVariant_Flavor FOREIGN KEY (FlavorId) REFERENCES ProductFlavor(Id) ON DELETE SET NULL,
@@ -132,7 +144,8 @@ CREATE TABLE ProductVariant (
 CREATE TABLE Region (
     Id INT PRIMARY KEY IDENTITY(1,1), 
     RegionCode VARCHAR(50) UNIQUE NOT NULL, 
-    Name VARCHAR(50) NOT NULL
+    Name VARCHAR(50) NOT NULL,
+	Status BIT NOT NULL DEFAULT 1,
 );
 
 -- Table: Province
@@ -140,6 +153,7 @@ CREATE TABLE Province (
     Id INT PRIMARY KEY IDENTITY(1,1),
     Name VARCHAR(50) NOT NULL,
     RegionId INT NOT NULL,
+	Status BIT NOT NULL DEFAULT 1,
     CONSTRAINT FK_Province_Region FOREIGN KEY (RegionId) REFERENCES Region(Id) ON DELETE CASCADE
 );
 
@@ -148,6 +162,7 @@ CREATE TABLE District (
     Id INT PRIMARY KEY IDENTITY(1,1),
     Name VARCHAR(50) NOT NULL,
     ProvinceId INT NOT NULL,
+	Status BIT NOT NULL DEFAULT 1,
     CONSTRAINT FK_District_Province FOREIGN KEY (ProvinceId) REFERENCES Province(Id) ON DELETE CASCADE
 );
 
@@ -218,8 +233,10 @@ CREATE TABLE PaymentHistory (
 CREATE TABLE Menu (
     Id INT PRIMARY KEY IDENTITY(1,1) NOT NULL,
     Name VARCHAR(100) NOT NULL,
+    Description VARCHAR(500),
     Url VARCHAR(500) NOT NULL,
     ParentMenuId INT DEFAULT NULL, -- Para manejar submenús
+	Status BIT NOT NULL DEFAULT 1,
     CONSTRAINT FK_Menu_Parent FOREIGN KEY (ParentMenuId) REFERENCES Menu(Id) ON DELETE NO ACTION
 );
 

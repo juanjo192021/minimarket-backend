@@ -9,5 +9,9 @@ public partial class UserType
 
     public string Name { get; set; } = null!;
 
+    public string? Description { get; set; }
+
+    public bool Status { get; set; }
+
     public virtual ICollection<SystemUser> SystemUsers { get; set; } = new List<SystemUser>();
 }

@@ -11,6 +11,8 @@ public partial class District
 
     public int ProvinceId { get; set; }
 
+    public bool Status { get; set; }
+
     public virtual Province Province { get; set; } = null!;
 
     public virtual ICollection<Sale> Sales { get; set; } = new List<Sale>();

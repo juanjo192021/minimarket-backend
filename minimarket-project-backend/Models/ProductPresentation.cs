@@ -11,5 +11,9 @@ public partial class ProductPresentation
 
     public string Unit { get; set; } = null!;
 
+    public string? Description { get; set; }
+
+    public bool Status { get; set; }
+
     public virtual ICollection<ProductVariant> ProductVariants { get; set; } = new List<ProductVariant>();
 }

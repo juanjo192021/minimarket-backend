@@ -55,15 +55,13 @@ public partial class DbMinimarketContext : DbContext
 
     public virtual DbSet<UserType> UserTypes { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-5KD39FJ\\SQLEXPRESS;DataBase=DB_MINIMARKET;Integrated Security=True;TrustServerCertificate=True;");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder){}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Brand>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Brand__3214EC0738B28ECB");
+            entity.HasKey(e => e.Id).HasName("PK__Brand__3214EC07E6D3CECB");
 
             entity.ToTable("Brand");
 
@@ -71,7 +69,8 @@ public partial class DbMinimarketContext : DbContext
 
             entity.Property(e => e.BrandImageUrl)
                 .HasMaxLength(500)
-                .IsUnicode(false);
+                .IsUnicode(false)
+                .HasDefaultValueSql("(NULL)");
             entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.LastUpdateDate).HasDefaultValueSql("(NULL)");
             entity.Property(e => e.Name)
@@ -82,7 +81,7 @@ public partial class DbMinimarketContext : DbContext
 
         modelBuilder.Entity<Category>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Category__3214EC07692B652E");
+            entity.HasKey(e => e.Id).HasName("PK__Category__3214EC07011B8B11");
 
             entity.ToTable("Category");
 
@@ -92,13 +91,19 @@ public partial class DbMinimarketContext : DbContext
 
             entity.Property(e => e.CategoryImageUrl)
                 .HasMaxLength(500)
-                .IsUnicode(false);
+                .IsUnicode(false)
+                .HasDefaultValueSql("(NULL)");
             entity.Property(e => e.CategoryLevel).HasDefaultValue(1);
+            entity.Property(e => e.CreationDate).HasDefaultValueSql("(getdate())");
+            entity.Property(e => e.Description)
+                .HasMaxLength(500)
+                .IsUnicode(false);
             entity.Property(e => e.LastUpdateDate).HasDefaultValueSql("(NULL)");
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.ParentCategoryId).HasDefaultValueSql("(NULL)");
+            entity.Property(e => e.Status).HasDefaultValue(true);
 
             entity.HasOne(d => d.ParentCategory).WithMany(p => p.InverseParentCategory)
                 .HasForeignKey(d => d.ParentCategoryId)
@@ -107,13 +112,14 @@ public partial class DbMinimarketContext : DbContext
 
         modelBuilder.Entity<District>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__District__3214EC07D9645714");
+            entity.HasKey(e => e.Id).HasName("PK__District__3214EC0717E4FEEF");
 
             entity.ToTable("District");
 
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Status).HasDefaultValue(true);
 
             entity.HasOne(d => d.Province).WithMany(p => p.Districts)
                 .HasForeignKey(d => d.ProvinceId)
@@ -122,16 +128,20 @@ public partial class DbMinimarketContext : DbContext
 
         modelBuilder.Entity<Menu>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Menu__3214EC07944B5555");
+            entity.HasKey(e => e.Id).HasName("PK__Menu__3214EC07BAF3F8C7");
 
             entity.ToTable("Menu");
 
             entity.HasIndex(e => e.ParentMenuId, "IDX_Menu_Parent");
 
+            entity.Property(e => e.Description)
+                .HasMaxLength(500)
+                .IsUnicode(false);
             entity.Property(e => e.Name)
                 .HasMaxLength(100)
                 .IsUnicode(false);
             entity.Property(e => e.ParentMenuId).HasDefaultValueSql("(NULL)");
+            entity.Property(e => e.Status).HasDefaultValue(true);
             entity.Property(e => e.Url)
                 .HasMaxLength(500)
                 .IsUnicode(false);
@@ -143,7 +153,7 @@ public partial class DbMinimarketContext : DbContext
 
         modelBuilder.Entity<PaymentHistory>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__PaymentH__3214EC0724AB445A");
+            entity.HasKey(e => e.Id).HasName("PK__PaymentH__3214EC07471A209E");
 
             entity.ToTable("PaymentHistory");
 
@@ -170,20 +180,24 @@ public partial class DbMinimarketContext : DbContext
 
         modelBuilder.Entity<PaymentMethod>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__PaymentM__3214EC0765E45D59");
+            entity.HasKey(e => e.Id).HasName("PK__PaymentM__3214EC0706903FC1");
 
             entity.ToTable("PaymentMethod");
 
-            entity.HasIndex(e => e.Name, "UQ__PaymentM__737584F6BB8E85EE").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__PaymentM__737584F64B40FF43").IsUnique();
 
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.PaymentMethodImageUrl)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(NULL)");
         });
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Product__3214EC07147FCCF2");
+            entity.HasKey(e => e.Id).HasName("PK__Product__3214EC076593C232");
 
             entity.ToTable("Product");
 
@@ -203,7 +217,8 @@ public partial class DbMinimarketContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.ProductImageUrl)
                 .HasMaxLength(500)
-                .IsUnicode(false);
+                .IsUnicode(false)
+                .HasDefaultValueSql("(NULL)");
             entity.Property(e => e.Status).HasDefaultValue(true);
 
             entity.HasOne(d => d.Brand).WithMany(p => p.Products)
@@ -226,24 +241,32 @@ public partial class DbMinimarketContext : DbContext
 
         modelBuilder.Entity<ProductFlavor>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ProductF__3214EC07D7CAD35C");
+            entity.HasKey(e => e.Id).HasName("PK__ProductF__3214EC070246647C");
 
             entity.ToTable("ProductFlavor");
 
+            entity.Property(e => e.Description)
+                .HasMaxLength(500)
+                .IsUnicode(false);
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Status).HasDefaultValue(true);
         });
 
         modelBuilder.Entity<ProductPresentation>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ProductP__3214EC07D9BB7B20");
+            entity.HasKey(e => e.Id).HasName("PK__ProductP__3214EC07C374CFFF");
 
             entity.ToTable("ProductPresentation");
 
+            entity.Property(e => e.Description)
+                .HasMaxLength(500)
+                .IsUnicode(false);
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Status).HasDefaultValue(true);
             entity.Property(e => e.Unit)
                 .HasMaxLength(20)
                 .IsUnicode(false);
@@ -251,7 +274,7 @@ public partial class DbMinimarketContext : DbContext
 
         modelBuilder.Entity<ProductVariant>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ProductV__3214EC0762A9DC82");
+            entity.HasKey(e => e.Id).HasName("PK__ProductV__3214EC07CE0F901D");
 
             entity.ToTable("ProductVariant");
 
@@ -261,9 +284,9 @@ public partial class DbMinimarketContext : DbContext
 
             entity.HasIndex(e => e.Sku, "IDX_ProductVariant_Sku");
 
-            entity.HasIndex(e => e.BarCode, "UQ__ProductV__8A2ACA9B1B689FDF").IsUnique();
+            entity.HasIndex(e => e.BarCode, "UQ__ProductV__8A2ACA9B16D153FA").IsUnique();
 
-            entity.HasIndex(e => e.Sku, "UQ__ProductV__CA1FD3C50394FAC6").IsUnique();
+            entity.HasIndex(e => e.Sku, "UQ__ProductV__CA1FD3C5C459CFF2").IsUnique();
 
             entity.Property(e => e.BarCode)
                 .HasMaxLength(60)
@@ -276,10 +299,12 @@ public partial class DbMinimarketContext : DbContext
             entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.ProductVariantImageUrl)
                 .HasMaxLength(500)
-                .IsUnicode(false);
+                .IsUnicode(false)
+                .HasDefaultValueSql("(NULL)");
             entity.Property(e => e.Sku)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Status).HasDefaultValue(true);
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.ProductVariantCreatedByNavigations)
                 .HasForeignKey(d => d.CreatedBy)
@@ -306,13 +331,14 @@ public partial class DbMinimarketContext : DbContext
 
         modelBuilder.Entity<Province>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Province__3214EC070C0B6F00");
+            entity.HasKey(e => e.Id).HasName("PK__Province__3214EC0785FB14A4");
 
             entity.ToTable("Province");
 
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Status).HasDefaultValue(true);
 
             entity.HasOne(d => d.Region).WithMany(p => p.Provinces)
                 .HasForeignKey(d => d.RegionId)
@@ -321,11 +347,11 @@ public partial class DbMinimarketContext : DbContext
 
         modelBuilder.Entity<Region>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Region__3214EC07C13571A7");
+            entity.HasKey(e => e.Id).HasName("PK__Region__3214EC0768AA1625");
 
             entity.ToTable("Region");
 
-            entity.HasIndex(e => e.RegionCode, "UQ__Region__82432A47B19C102E").IsUnique();
+            entity.HasIndex(e => e.RegionCode, "UQ__Region__82432A4757108E72").IsUnique();
 
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
@@ -333,24 +359,29 @@ public partial class DbMinimarketContext : DbContext
             entity.Property(e => e.RegionCode)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Status).HasDefaultValue(true);
         });
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Role__3214EC07834332E4");
+            entity.HasKey(e => e.Id).HasName("PK__Role__3214EC07012146F8");
 
             entity.ToTable("Role");
 
-            entity.HasIndex(e => e.Name, "UQ__Role__737584F65012444D").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__Role__737584F6E5FA28FA").IsUnique();
 
+            entity.Property(e => e.Description)
+                .HasMaxLength(500)
+                .IsUnicode(false);
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Status).HasDefaultValue(true);
         });
 
         modelBuilder.Entity<RoleMenu>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Role_Men__3214EC074CDF060D");
+            entity.HasKey(e => e.Id).HasName("PK__Role_Men__3214EC07866EEA93");
 
             entity.ToTable("Role_Menu");
 
@@ -371,7 +402,7 @@ public partial class DbMinimarketContext : DbContext
 
         modelBuilder.Entity<RolePermission>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Role_Per__3214EC0714249465");
+            entity.HasKey(e => e.Id).HasName("PK__Role_Per__3214EC0720043730");
 
             entity.ToTable("Role_Permissions");
 
@@ -383,12 +414,12 @@ public partial class DbMinimarketContext : DbContext
             entity.HasOne(d => d.IdRoleNavigation).WithMany(p => p.RolePermissions)
                 .HasForeignKey(d => d.IdRole)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Role_Perm__IdRol__589C25F3");
+                .HasConstraintName("FK__Role_Perm__IdRol__40F9A68C");
         });
 
         modelBuilder.Entity<Sale>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Sale__3214EC075ACD111D");
+            entity.HasKey(e => e.Id).HasName("PK__Sale__3214EC07D0810CD6");
 
             entity.ToTable("Sale");
 
@@ -400,9 +431,9 @@ public partial class DbMinimarketContext : DbContext
 
             entity.HasIndex(e => e.TransactionId, "UQ_Sale_TransactionId").IsUnique();
 
-            entity.HasIndex(e => e.TransactionId, "UQ__Sale__55433A6A0579D241").IsUnique();
+            entity.HasIndex(e => e.TransactionId, "UQ__Sale__55433A6AC468445F").IsUnique();
 
-            entity.HasIndex(e => e.InvoiceNumber, "UQ__Sale__D776E9818E793AB0").IsUnique();
+            entity.HasIndex(e => e.InvoiceNumber, "UQ__Sale__D776E981D1935318").IsUnique();
 
             entity.Property(e => e.Address)
                 .HasMaxLength(200)
@@ -455,7 +486,7 @@ public partial class DbMinimarketContext : DbContext
 
         modelBuilder.Entity<SaleDetail>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__SaleDeta__3214EC07BA5560B6");
+            entity.HasKey(e => e.Id).HasName("PK__SaleDeta__3214EC0748666336");
 
             entity.ToTable("SaleDetail");
 
@@ -485,7 +516,7 @@ public partial class DbMinimarketContext : DbContext
 
         modelBuilder.Entity<SystemUser>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__SystemUs__3214EC07BD9CCD43");
+            entity.HasKey(e => e.Id).HasName("PK__SystemUs__3214EC0756205C82");
 
             entity.ToTable("SystemUser");
 
@@ -493,9 +524,9 @@ public partial class DbMinimarketContext : DbContext
 
             entity.HasIndex(e => e.UserTypeId, "IDX_SystemUser_UserType");
 
-            entity.HasIndex(e => e.DocumentNumber, "UQ__SystemUs__689939182F892A97").IsUnique();
+            entity.HasIndex(e => e.DocumentNumber, "UQ__SystemUs__68993918033D7576").IsUnique();
 
-            entity.HasIndex(e => e.Email, "UQ__SystemUs__A9D10534C579568E").IsUnique();
+            entity.HasIndex(e => e.Email, "UQ__SystemUs__A9D10534CC139236").IsUnique();
 
             entity.Property(e => e.Address)
                 .HasMaxLength(200)
@@ -527,6 +558,10 @@ public partial class DbMinimarketContext : DbContext
             entity.Property(e => e.Phone)
                 .HasMaxLength(20)
                 .IsUnicode(false);
+            entity.Property(e => e.ProfileImageUrl)
+                .HasMaxLength(500)
+                .IsUnicode(false)
+                .HasDefaultValueSql("(NULL)");
             entity.Property(e => e.RegistrationDate).HasDefaultValueSql("(getdate())");
             entity.Property(e => e.Status).HasDefaultValue(true);
 
@@ -538,7 +573,7 @@ public partial class DbMinimarketContext : DbContext
 
         modelBuilder.Entity<UserRole>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UserRole__3214EC07010AE440");
+            entity.HasKey(e => e.Id).HasName("PK__UserRole__3214EC070D33F1DF");
 
             entity.ToTable("UserRole");
 
@@ -546,24 +581,28 @@ public partial class DbMinimarketContext : DbContext
 
             entity.HasOne(d => d.Role).WithMany(p => p.UserRoles)
                 .HasForeignKey(d => d.RoleId)
-                .HasConstraintName("FK__UserRole__RoleId__68487DD7");
+                .HasConstraintName("FK__UserRole__RoleId__6A30C649");
 
             entity.HasOne(d => d.SystemUser).WithMany(p => p.UserRoles)
                 .HasForeignKey(d => d.SystemUserId)
-                .HasConstraintName("FK__UserRole__System__6754599E");
+                .HasConstraintName("FK__UserRole__System__693CA210");
         });
 
         modelBuilder.Entity<UserType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__UserType__3214EC0758FC186E");
+            entity.HasKey(e => e.Id).HasName("PK__UserType__3214EC0737A61136");
 
             entity.ToTable("UserType");
 
-            entity.HasIndex(e => e.Name, "UQ__UserType__737584F60A958DF7").IsUnique();
+            entity.HasIndex(e => e.Name, "UQ__UserType__737584F612BE7D76").IsUnique();
 
+            entity.Property(e => e.Description)
+                .HasMaxLength(500)
+                .IsUnicode(false);
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.Status).HasDefaultValue(true);
         });
 
         OnModelCreatingPartial(modelBuilder);

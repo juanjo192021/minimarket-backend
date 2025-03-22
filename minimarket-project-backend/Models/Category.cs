@@ -9,6 +9,8 @@ public partial class Category
 
     public string Name { get; set; } = null!;
 
+    public string? Description { get; set; }
+
     public string? CategoryImageUrl { get; set; }
 
     public int? ParentCategoryId { get; set; }
@@ -18,6 +20,8 @@ public partial class Category
     public DateTime CreationDate { get; set; }
 
     public DateTime? LastUpdateDate { get; set; }
+
+    public bool Status { get; set; }
 
     public virtual ICollection<Category> InverseParentCategory { get; set; } = new List<Category>();
 

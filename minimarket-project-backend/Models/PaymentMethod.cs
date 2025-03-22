@@ -9,5 +9,7 @@ public partial class PaymentMethod
 
     public string Name { get; set; } = null!;
 
+    public string? PaymentMethodImageUrl { get; set; }
+
     public virtual ICollection<PaymentHistory> PaymentHistories { get; set; } = new List<PaymentHistory>();
 }

@@ -27,14 +27,15 @@ builder.Services.AddCors(opt =>
     });
 });
 
-// 5) Inyección de dependencia 
+// 5) Inyecciï¿½n de dependencia 
 
 builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IFirebaseStorageService, FirebaseStorageService>();
 builder.Services.AddScoped<IImageManagerService, ImageManagerService>();
+builder.Services.AddScoped<IUserTypeService, UserTypeService>();
 
-// 6) Inyección de AutoMapper
+// 6) Inyecciï¿½n de AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 //7) Agregar todos validaciones que configuremos en la clase Program

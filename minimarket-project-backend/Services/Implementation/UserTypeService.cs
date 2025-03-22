@@ -2,37 +2,29 @@
 using Microsoft.EntityFrameworkCore;
 using minimarket_project_backend.Common.Responses;
 using minimarket_project_backend.Dtos.Brand;
+using minimarket_project_backend.Dtos.UserType;
 using minimarket_project_backend.Helpers;
 using minimarket_project_backend.Models;
 using minimarket_project_backend.Utilities;
 
 namespace minimarket_project_backend.Services.Implementation
 {
-    public class BrandService : IBrandService
+    public class UserTypeService : IUserTypeService
     {
         private readonly DbMinimarketContext _dbcontext;
         private readonly IMapper _mapper;
-        private readonly QueryHelper _queryHelper;
-        private readonly ResponseHelper _responseHelper;
-        private readonly IImageManagerService _imageManagerService;
+        private readonly QueryHelper _queryHelper = new();
+        private readonly ResponseHelper _responseHelper = new();
 
-        public BrandService(
-            DbMinimarketContext dbcontext, 
-            IMapper mapper, 
-            IFirebaseStorageService firebaseStorageService,
-            IImageManagerService imageManagerService)
+        public UserTypeService(DbMinimarketContext dbcontext, IMapper mapper)
         {
             _dbcontext = dbcontext;
             _mapper = mapper;
-            _queryHelper = new QueryHelper();
-            _responseHelper = new ResponseHelper();
-            _imageManagerService = imageManagerService;
         }
-        
 
-        public async Task<PaginationResponse<List<Brand>>> GetAll(string name, int page, int limit)
+        public async Task<PaginationResponse<List<UserType>>> GetAll(string name, int page, int limit)
         {
-            IQueryable<Brand> query = _dbcontext.Brands;
+            IQueryable<UserType> query = _dbcontext.UserTypes;
 
             if (!string.IsNullOrEmpty(name))
             {
@@ -42,9 +34,10 @@ namespace minimarket_project_backend.Services.Implementation
 
             int totalRecords = await query.CountAsync();
 
-            List<Brand> data = await _queryHelper.GetPaginatedList(query, page, limit);
+            List<UserType> data = await _queryHelper.GetPaginatedList(query, page, limit);
 
-            var paginationResponse = new PaginationResponse<List<Brand>> {
+            var paginationResponse = new PaginationResponse<List<UserType>>
+            {
                 Page = page,
                 PageSize = limit,
                 TotalRecords = totalRecords,
@@ -57,16 +50,15 @@ namespace minimarket_project_backend.Services.Implementation
             return _responseHelper.CreatePaginationResponse(paginationResponse);
         }
 
-        public async Task<Brand?> SearchById(int id)
+        public async Task<UserType?> SearchById(int id)
         {
             try
             {
-                var marca = await _dbcontext.Brands.FindAsync(id);
+                var userType = await _dbcontext.UserTypes.FindAsync(id);
 
-                if (marca == null)
-                    return null;
+                if (userType == null) return null;
 
-                return marca;
+                return userType;
 
             }
             catch (Exception)
@@ -75,16 +67,15 @@ namespace minimarket_project_backend.Services.Implementation
             }
         }
 
-        public async Task<Brand?> SearchByName(string name)
+        public async Task<UserType?> SearchByName(string name)
         {
             try
             {
-                var marca = await _dbcontext.Brands.FirstOrDefaultAsync(x => x.Name == name);
+                var userType = await _dbcontext.UserTypes.FirstOrDefaultAsync(x => x.Name == name);
 
-                if (marca == null)
-                    return null;
+                if (userType == null) return null;
 
-                return marca;
+                return userType;
 
             }
             catch (Exception)
@@ -93,22 +84,19 @@ namespace minimarket_project_backend.Services.Implementation
             }
         }
 
-        public async Task<Brand?> Create(BrandRequestDTO brandRequestDTO)
+        public async Task<UserType?> Create(UserTypeRequestDTO userTypeRequestDTO)
         {
             try
             {
-                var brand = _mapper.Map<Brand>(brandRequestDTO);
+                var userType = _mapper.Map<UserType>(userTypeRequestDTO);
 
-                brand.CreationDate = DateTime.Now;
+                _dbcontext.UserTypes.Add(userType);
 
-                brand.BrandImageUrl = await _imageManagerService.UploadImageAsync(brandRequestDTO.fileImage, "Brands");
-
-                _dbcontext.Brands.Add(brand);
                 int filasAfectadas = await _dbcontext.SaveChangesAsync();
 
-                if (brand.Id > 0 && filasAfectadas > 0)
+                if (userType.Id > 0 && filasAfectadas > 0)
                 {
-                    return brand;
+                    return userType;
                 }
 
                 return null;
@@ -119,24 +107,21 @@ namespace minimarket_project_backend.Services.Implementation
             }
         }
 
-        public async Task<Brand?> Update(Brand brand, BrandRequestDTO brandRequestDTO)
+        public async Task<UserType?> Update(UserType userType, UserTypeRequestDTO userTypeRequestDTO)
         {
             try
             {
-                
-                brand.Name = brandRequestDTO.name ?? brand.Name;
+                userType.Name = userTypeRequestDTO.name ?? userType.Name;
+                userType.Description = userTypeRequestDTO.description ?? userType.Description;
+                userType.Status = userTypeRequestDTO.status;
 
-                brand.BrandImageUrl = await _imageManagerService.UploadImageAsync(brandRequestDTO.fileImage, "Brands", brand.BrandImageUrl);
-                brand.Status = brandRequestDTO.status;
-                brand.LastUpdateDate = DateTime.Now;
-
-                _dbcontext.Brands.Update(brand);
+                _dbcontext.UserTypes.Update(userType);
 
                 int filasAfectadas = await _dbcontext.SaveChangesAsync();
 
-                if (brand.Id > 0 && filasAfectadas > 0)
+                if (userType.Id > 0 && filasAfectadas > 0)
                 {
-                    return brand;
+                    return userType;
                 }
 
                 return null;
@@ -148,17 +133,17 @@ namespace minimarket_project_backend.Services.Implementation
             }
         }
 
-        public async Task<bool> Deactivated(Brand brand)
+        public async Task<bool> Deactivated(UserType userType)
         {
             try
             {
-                brand.Status = false;
+                userType.Status = false;
 
-                _dbcontext.Brands.Update(brand);
+                _dbcontext.UserTypes.Update(userType);
 
                 int filasAfectadas = await _dbcontext.SaveChangesAsync();
 
-                if (brand.Id > 0 && filasAfectadas > 0)
+                if (userType.Id > 0 && filasAfectadas > 0)
                 {
                     return true;
                 }
@@ -172,15 +157,15 @@ namespace minimarket_project_backend.Services.Implementation
         }
 
 
-        public async Task<bool> Delete(Brand brand)
+        public async Task<bool> Delete(UserType userType)
         {
             try
             {
-                _dbcontext.Brands.Remove(brand);
+                _dbcontext.UserTypes.Remove(userType);
 
                 int filasAfectadas = await _dbcontext.SaveChangesAsync();
 
-                if (brand.Id > 0 && filasAfectadas > 0)
+                if (userType.Id > 0 && filasAfectadas > 0)
                 {
                     return true;
                 }

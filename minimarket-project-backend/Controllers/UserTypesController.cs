@@ -1,32 +1,32 @@
-﻿using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using minimarket_project_backend.Common.Validator;
 using minimarket_project_backend.Dtos.Brand;
+using minimarket_project_backend.Dtos.UserType;
 using minimarket_project_backend.Helpers;
 using minimarket_project_backend.Models;
 using minimarket_project_backend.Services;
+using minimarket_project_backend.Services.Implementation;
 
 namespace minimarket_project_backend.Controllers
 {
-    [Route("api/v1/brands")]
-    [EnableCors("ReglasCors")]
-    public class BrandsController : Controller
+    [Route("api/v1/user-types")]
+    public class UserTypesController : Controller
     {
         private readonly RequestValidator _requestValidator = new();
-        private readonly ResponseHelper _responseHelper = new ResponseHelper();
+        private readonly ResponseHelper _responseHelper = new();
         private readonly ErrorResponseHelper _errorResponseHelper = new();
 
-        private readonly IBrandService _brandService;
+        private readonly IUserTypeService _userTypeService;
 
-        public BrandsController(IBrandService brandService)
+        public UserTypesController(IUserTypeService userTypeService)
         {
-            _brandService = brandService;
+            _userTypeService = userTypeService;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll(
-            [FromQuery] string? name = null, 
-            [FromQuery] int page = 1, 
+            [FromQuery] string? name = null,
+            [FromQuery] int page = 1,
             [FromQuery] int limit = 10)
         {
 
@@ -36,7 +36,7 @@ namespace minimarket_project_backend.Controllers
 
                 if (!validationResult) return _errorResponseHelper.CreateBadRequestResponse("The page or limit cannot be less than zero.");
 
-                var response = await _brandService.GetAll(name ?? string.Empty, page, limit);
+                var response = await _userTypeService.GetAll(name ?? string.Empty, page, limit);
 
                 if (!string.IsNullOrEmpty(name) && (response?.Data == null || response.Data.Count == 0))
                     return _errorResponseHelper.CreateNotFoundErrorResponse<Brand>(name);
@@ -61,14 +61,14 @@ namespace minimarket_project_backend.Controllers
 
                 if (!validationResult) return _errorResponseHelper.CreateBadRequestResponse("The id cannot be less than or equal to zero.");
 
-                var response = await _brandService.SearchById(id);
+                var response = await _userTypeService.SearchById(id);
 
                 if (response == null) return _errorResponseHelper.CreateNotFoundErrorResponse<Brand>(id);
 
                 return _responseHelper.CreateSuccessResponse(
                     response,
                     StatusCodes.Status200OK,
-                    "Brand successfully found.");
+                    "User Type successfully found.");
 
             }
             catch (Exception ex)
@@ -78,26 +78,26 @@ namespace minimarket_project_backend.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm] BrandRequestDTO brandRequestDTO)
+        public async Task<IActionResult> Create([FromBody] UserTypeRequestDTO userTypeRequestDTO)
         {
             try
             {
                 if (!ModelState.IsValid) return _errorResponseHelper.CreateRequestErrorResponse(ModelState);
 
-                var brand = await _brandService.SearchByName(brandRequestDTO.name);
+                var brand = await _userTypeService.SearchByName(userTypeRequestDTO.name);
 
-                if (brand != null) return _errorResponseHelper.CreateConflictResponse("The brand already exists.");
+                if (brand != null) return _errorResponseHelper.CreateConflictResponse("The user type already exists.");
 
-                var response = await _brandService.Create(brandRequestDTO);
+                var response = await _userTypeService.Create(userTypeRequestDTO);
 
-                if (response == null) return _errorResponseHelper.CreateServerErrorResponse("The brand could not be created.");
+                if (response == null) return _errorResponseHelper.CreateServerErrorResponse("The user type could not be created.");
 
                 return _responseHelper.CreateSuccessResponse(
                     response,
                     201,
-                    "Brand successfully created.",
+                    "User Type successfully created.",
                     nameof(SearchById), // Nombre del método que recupera una marca por ID
-                    "Brands", // Nombre del controlador
+                    "UserTypes", // Nombre del controlador
                     new { id = response.Id } // Parámetros de la ruta para obtener el recurso
                 );
             }
@@ -110,7 +110,7 @@ namespace minimarket_project_backend.Controllers
 
         [HttpPatch]
         [Route("{id}")]
-        public async Task<IActionResult> Update(int id, [FromForm] BrandRequestDTO brandRequestDTO)
+        public async Task<IActionResult> Update(int id, [FromBody] UserTypeRequestDTO userTypeRequestDTO)
         {
             try
             {
@@ -120,11 +120,11 @@ namespace minimarket_project_backend.Controllers
 
                 if (!ModelState.IsValid) return _errorResponseHelper.CreateRequestErrorResponse(ModelState);
 
-                var brand = await _brandService.SearchById(id);
+                var userType = await _userTypeService.SearchById(id);
 
-                if (brand == null) return _errorResponseHelper.CreateNotFoundErrorResponse<Brand>(id);
+                if (userType == null) return _errorResponseHelper.CreateNotFoundErrorResponse<Brand>(id);
 
-                var response = await _brandService.Update(brand, brandRequestDTO);
+                var response = await _userTypeService.Update(userType, userTypeRequestDTO);
 
                 if (response == null) return _errorResponseHelper.CreateServerErrorResponse("The brand could not be updated.");
 
@@ -139,7 +139,7 @@ namespace minimarket_project_backend.Controllers
             }
         }
 
-        [HttpDelete()]
+        [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -149,15 +149,15 @@ namespace minimarket_project_backend.Controllers
 
                 if (!validationResult) return _errorResponseHelper.CreateBadRequestResponse("The id cannot be less than or equal to zero.");
 
-                var brand = await _brandService.SearchById(id);
+                var userType = await _userTypeService.SearchById(id);
 
-                if (brand == null) return _errorResponseHelper.CreateNotFoundErrorResponse<Brand>(id);
+                if (userType == null) return _errorResponseHelper.CreateNotFoundErrorResponse<Brand>(id);
 
-                var response = await _brandService.Deactivated(brand);
+                var response = await _userTypeService.Deactivated(userType);
 
                 if (!response) return _errorResponseHelper.CreateBadRequestResponse("The brand could not be deleted.");
 
-                return _responseHelper.CreateSuccessDeleteResponse(brand,"Brand successfully deleted.");
+                return _responseHelper.CreateSuccessDeleteResponse(userType, "Brand successfully deleted.");
             }
             catch (Exception ex)
             {

@@ -15,6 +15,8 @@ public partial class SystemUser
 
     public string LastName { get; set; } = null!;
 
+    public string? ProfileImageUrl { get; set; }
+
     public string DocumentType { get; set; } = null!;
 
     public string DocumentNumber { get; set; } = null!;

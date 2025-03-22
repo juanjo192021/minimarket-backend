@@ -33,6 +33,8 @@ public partial class ProductVariant
 
     public int? LastUpdatedBy { get; set; }
 
+    public bool Status { get; set; }
+
     public virtual SystemUser CreatedByNavigation { get; set; } = null!;
 
     public virtual ProductFlavor? Flavor { get; set; }

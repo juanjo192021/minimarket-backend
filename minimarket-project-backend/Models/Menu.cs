@@ -9,9 +9,13 @@ public partial class Menu
 
     public string Name { get; set; } = null!;
 
+    public string? Description { get; set; }
+
     public string Url { get; set; } = null!;
 
     public int? ParentMenuId { get; set; }
+
+    public bool Status { get; set; }
 
     public virtual ICollection<Menu> InverseParentMenu { get; set; } = new List<Menu>();
 

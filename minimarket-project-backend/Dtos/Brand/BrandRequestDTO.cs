@@ -15,6 +15,6 @@ namespace minimarket_project_backend.Dtos.Brand
         public IFormFile? fileImage { get; set; }
 
         [Required]
-        public bool? status { get; set; }
+        public bool status { get; set; }
     }
 }

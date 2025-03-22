@@ -9,5 +9,9 @@ public partial class ProductFlavor
 
     public string Name { get; set; } = null!;
 
+    public string? Description { get; set; }
+
+    public bool Status { get; set; }
+
     public virtual ICollection<ProductVariant> ProductVariants { get; set; } = new List<ProductVariant>();
 }
