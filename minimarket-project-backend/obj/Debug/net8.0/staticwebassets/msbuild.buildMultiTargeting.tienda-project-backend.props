@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\tienda-project-backend.props" />
-</Project>

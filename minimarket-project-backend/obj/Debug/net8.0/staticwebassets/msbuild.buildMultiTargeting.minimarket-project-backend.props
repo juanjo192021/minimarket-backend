@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\minimarket-project-backend.props" />
-</Project>

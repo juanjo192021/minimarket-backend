@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\minimarket-project-backend.props" />
-</Project>
