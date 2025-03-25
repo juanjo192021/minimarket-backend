@@ -18,8 +18,7 @@ namespace minimarket_project_backend.Services.Implementation
 
         public BrandService(
             DbMinimarketContext dbcontext, 
-            IMapper mapper, 
-            IFirebaseStorageService firebaseStorageService,
+            IMapper mapper,
             IImageManagerService imageManagerService)
         {
             _dbcontext = dbcontext;
@@ -101,7 +100,7 @@ namespace minimarket_project_backend.Services.Implementation
 
                 brand.CreationDate = DateTime.Now;
 
-                brand.BrandImageUrl = await _imageManagerService.UploadImageAsync(brandRequestDTO.fileImage, "Brands");
+                brand.ImageUrl = await _imageManagerService.UploadImageAsync(brandRequestDTO.fileImage, "Brands");
 
                 _dbcontext.Brands.Add(brand);
                 int filasAfectadas = await _dbcontext.SaveChangesAsync();
@@ -126,7 +125,7 @@ namespace minimarket_project_backend.Services.Implementation
                 
                 brand.Name = brandRequestDTO.name ?? brand.Name;
 
-                brand.BrandImageUrl = await _imageManagerService.UploadImageAsync(brandRequestDTO.fileImage, "Brands", brand.BrandImageUrl);
+                brand.ImageUrl = await _imageManagerService.UploadImageAsync(brandRequestDTO.fileImage, "Brands", brand.ImageUrl);
                 brand.Status = brandRequestDTO.status;
                 brand.LastUpdateDate = DateTime.Now;
 

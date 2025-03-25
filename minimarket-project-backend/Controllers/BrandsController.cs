@@ -13,7 +13,7 @@ namespace minimarket_project_backend.Controllers
     public class BrandsController : Controller
     {
         private readonly RequestValidator _requestValidator = new();
-        private readonly ResponseHelper _responseHelper = new ResponseHelper();
+        private readonly ResponseHelper _responseHelper = new ();
         private readonly ErrorResponseHelper _errorResponseHelper = new();
 
         private readonly IBrandService _brandService;

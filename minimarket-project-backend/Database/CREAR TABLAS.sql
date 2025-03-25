@@ -9,7 +9,7 @@ CREATE TABLE Category (
     Id INT IDENTITY(1,1) PRIMARY KEY,
     Name VARCHAR(100) NOT NULL,
     Description VARCHAR(500),
-    CategoryImageUrl VARCHAR(500) DEFAULT NULL,
+    ImageUrl VARCHAR(500) DEFAULT NULL,
     ParentCategoryId INT DEFAULT NULL,
 	CategoryLevel INT DEFAULT 1 NOT NULL,
     CreationDate DATETIME2 DEFAULT GETDATE() NOT NULL,
@@ -22,7 +22,7 @@ CREATE TABLE Category (
 CREATE TABLE Brand (
     Id INT PRIMARY KEY IDENTITY(1,1),
     Name VARCHAR(100) NOT NULL,
-    BrandImageUrl VARCHAR(500) DEFAULT NULL,
+    ImageUrl VARCHAR(500) DEFAULT NULL,
     Status BIT DEFAULT 1 NOT NULL,
     CreationDate DATETIME2 DEFAULT GETDATE() NOT NULL,
     LastUpdateDate DATETIME2 DEFAULT NULL
@@ -44,7 +44,7 @@ CREATE TABLE SystemUser (
     PasswordHash VARCHAR(500) NOT NULL,
     FirstName VARCHAR(60) NOT NULL,
     LastName VARCHAR(60) NOT NULL,
-    ProfileImageUrl VARCHAR(500) DEFAULT NULL,
+    ImageUrl VARCHAR(500) DEFAULT NULL,
     DocumentType VARCHAR(20) NOT NULL,
     DocumentNumber VARCHAR(20) NOT NULL UNIQUE,
     BirthDate DATE NOT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE Product (
     Id INT PRIMARY KEY IDENTITY(1,1),
     Name VARCHAR(200) NOT NULL,
     Description VARCHAR(500),
-    ProductImageUrl VARCHAR(500) DEFAULT NULL,
+    ImageUrl VARCHAR(500) DEFAULT NULL,
     Status BIT DEFAULT 1 NOT NULL,
     CreationDate DATETIME2 DEFAULT GETDATE() NOT NULL,
     LastUpdateDate DATETIME2 DEFAULT GETDATE() NULL,
@@ -122,7 +122,7 @@ CREATE TABLE ProductVariant (
     Sku VARCHAR(50) NOT NULL UNIQUE,
     BarCode VARCHAR(60) NOT NULL UNIQUE,
     Description VARCHAR(500),
-    ProductVariantImageUrl VARCHAR(500) DEFAULT NULL,
+    ImageUrl VARCHAR(500) DEFAULT NULL,
     Price DECIMAL(10,2) NOT NULL,
     Stock INT NOT NULL,
 	CreationDate DATETIME2 DEFAULT GETDATE() NOT NULL,
@@ -212,7 +212,7 @@ CREATE TABLE SaleDetail (
 CREATE TABLE PaymentMethod (
     Id INT PRIMARY KEY IDENTITY(1,1),
     Name VARCHAR(50) NOT NULL UNIQUE, -- Ejemplo: Visa, Mastercard, Yape, Plin
-    PaymentMethodImageUrl VARCHAR(500) DEFAULT NULL,
+    ImageUrl VARCHAR(500) DEFAULT NULL,
 );
 
 -- Table: PaymentHistory

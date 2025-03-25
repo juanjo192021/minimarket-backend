@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using minimarket_project_backend.Dtos.Category;
+using minimarket_project_backend.Models;
 
 namespace minimarket_project_backend.Profiles
 {
@@ -6,9 +8,7 @@ namespace minimarket_project_backend.Profiles
     {
         public CategoryProfile()
         {
-            //CreateMap<Categoria, CategoriaDTO>();
-            //CreateMap<CreateCategoriaDTO, Categoria>();
-            //CreateMap<UpdateCategoriaDTO, Categoria>();
+            CreateMap<CategoryRequestDTO, Category>();
         }
     }
 }

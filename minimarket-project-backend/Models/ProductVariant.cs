@@ -19,7 +19,7 @@ public partial class ProductVariant
 
     public string? Description { get; set; }
 
-    public string? ProductVariantImageUrl { get; set; }
+    public string? ImageUrl { get; set; }
 
     public decimal Price { get; set; }
 
